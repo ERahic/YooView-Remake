@@ -1,3 +1,4 @@
+'use client'
 import Header from "@/app/layout/Header"
 
 export default function Home() {
