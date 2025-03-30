@@ -16,7 +16,21 @@ function SearchBar() {
         <>
         <div className="flex gap-2">
         {/*Search Bar*/}
-        <input type="text" placeholder="Search!" className={clsx("border-1 border-blue-950 rounded-full w-150 text-start pl-4")}/>
+        {/*Magnifying glass appears when searchbar is clicked on*/}
+        <div className="relative flex">
+        {searchClicked && (
+            <SearchIcon className="absolute mt-2.5 ml-4 text-gray-500"></SearchIcon>
+        )}
+        <input type="text" placeholder="Search!" className={clsx("border-1 border-blue-950 rounded-full w-150 text-start pl-4",
+            {
+                "border-1 border-blue-950 rounded-full w-150 text-start pl-4": !searchClicked,
+                "outline-none border-1 border-green-800 rounded-full w-175 text-start pl-12": searchClicked,
+            }
+        )}
+        onFocus={() => setSearchClicked(true)}
+        onBlur={() => setSearchClicked(false)}
+        />
+        </div>
                 <div className="border-1 border-blue-950 rounded-full">
                     <IconButton><SearchIcon></SearchIcon></IconButton>
                 </div>
