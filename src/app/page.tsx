@@ -1,5 +1,5 @@
-'use client'
-import Header from "@/app/layout/Header"
+"use client";
+import Header from "@/app/layout/Header";
 
 export default function Home() {
   return (

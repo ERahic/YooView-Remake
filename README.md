@@ -1,4 +1,5 @@
 # YooView-Remake
+
 A recreation of my prior YooView homepage, did not feel satisfied with how it was turning out originally, so a fresh start felt needed.
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
