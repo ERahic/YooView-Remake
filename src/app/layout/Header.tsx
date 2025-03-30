@@ -14,14 +14,14 @@ function Header() {
         <div className="flex justify-between pb-4">
         {/*Div below will be for menu button and logo*/}
         <div className="flex gap-4">
-        <IconButton><MenuButton></MenuButton></IconButton>
+        <IconButton><MenuButton className="border-1 border-blue-950 rounded-full"></MenuButton></IconButton>
         <Image src="/Yooview-logo.png" alt="Logo" width={300} height={300} priority/>
         </div>
         {/*Div below will be for search bar, need to expand and add magnifying glass when clicked on. need microphone button beside search bar*/}
         <div className="flex justify-center mt-5">
             <SearchBar></SearchBar>
         </div>
-            <div className="flex items-center justify-end gap-6">
+            <div className="flex items-center justify-end gap-6 border-1 border-blue-950 rounded-full mt-2">
             <IconButton>
                 <DarkModeIcon></DarkModeIcon>
             </IconButton>
