@@ -1,6 +1,5 @@
 import * as React from "react";
 import Image from "next/image";
-import MenuButton from "@mui/icons-material/Menu";
 import IconButton from "@mui/material/IconButton";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -12,11 +11,8 @@ function Header() {
 return (
     <>
     <div className="flex justify-between pb-4">
-        {/*Div below will be for menu button and logo*/}
-        <div className="flex gap-4">
-        <IconButton>
-            <MenuButton className="border-1 border-blue-950 rounded-full"></MenuButton>
-        </IconButton>
+        {/*Div below will be for logo*/}
+        <div className="flex flex-shrink-0 gap-4">
         <Image
             src="/Yooview-logo.png"
             alt="Logo"
