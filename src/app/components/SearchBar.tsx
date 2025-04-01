@@ -9,48 +9,48 @@ import clsx from "clsx";
 
 function SearchBar() {
   // const [searchClicked, setSearchClicked] = useState<boolean>(false);
-const [searchClicked, setSearchClicked] = useState<boolean>(false);
+  const [searchClicked, setSearchClicked] = useState<boolean>(false);
 
   // use clsx and useState to make search bar expand a bit when clicked on,
-return (
+  return (
     <>
-    <div className="flex gap-2">
+      <div className="flex gap-2">
         {/*Search Bar*/}
         {/*Magnifying glass appears when searchbar is clicked on*/}
         <div className="relative flex">
-        {searchClicked && (
+          {searchClicked && (
             <SearchIcon className="absolute mt-2.5 ml-4 text-gray-500"></SearchIcon>
-        )}
-        <input
+          )}
+          <input
             type="text"
             placeholder="Search!"
             className={clsx(
-            "border-1 border-blue-950 rounded-full w-150 text-start pl-4",
-            {
+              "border-1 border-blue-950 rounded-full w-150 text-start pl-4",
+              {
                 "border-1 border-blue-950 rounded-full w-150 text-start pl-4 caret-transparent":
-                !searchClicked,
+                  !searchClicked,
                 "outline-none border-1 border-green-800 rounded-full w-175 text-start pl-12":
-                searchClicked,
-            },
+                  searchClicked,
+              }
             )}
             onFocus={() => setSearchClicked(true)}
             onBlur={() => setSearchClicked(false)}
-        />
+          />
         </div>
         <div className="border-1 border-blue-950 rounded-full">
-        <IconButton>
+          <IconButton>
             <SearchIcon></SearchIcon>
-        </IconButton>
+          </IconButton>
         </div>
         {/*Microphone*/}
         <div className="border-1 border-blue-950 rounded-full">
-        <IconButton>
+          <IconButton>
             <MicIcon></MicIcon>
-        </IconButton>
+          </IconButton>
         </div>
-    </div>
+      </div>
     </>
-);
+  );
 }
 
 export default SearchBar;
