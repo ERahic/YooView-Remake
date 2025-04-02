@@ -36,7 +36,7 @@ function Header() {
           </div>
         </div>
         {/*Div below will be for search bar, need to expand and add magnifying glass when clicked on. need microphone button beside search bar*/}
-        <div className="flex mt-5">
+        <div className="flex mt-8 mb-2">
           <SearchBar></SearchBar>
         </div>
         <div className="flex gap-6 border-1 border-blue-950 rounded-full mt-2">

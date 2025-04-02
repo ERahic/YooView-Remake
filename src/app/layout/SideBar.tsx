@@ -19,11 +19,12 @@ function Sidebar() {
             <TheatersIcon className="ml-2"></TheatersIcon>Clips
           </div>
           <div>
-            <AutoAwesomeIcon></AutoAwesomeIcon>Stars
+            <AutoAwesomeIcon className="ml-2"></AutoAwesomeIcon>Stars
           </div>
-          <EmojiPeopleIcon></EmojiPeopleIcon>You
+          <div>
+            <EmojiPeopleIcon className="ml-2"></EmojiPeopleIcon>You
+          </div>
         </div>
-        <div></div>
       </div>
     </>
   );
