@@ -10,7 +10,7 @@ import clsx from "clsx";
 function Sidebar() {
   return (
     <>
-      <div className="fixed left-0 h-full top-20 w-20 p-4 ml-3 debug">
+      <div className="fixed left-0 h-full top-24 w-20 p-4 pl-4 debug bg-gray-800">
         <div className="items-center flex flex-col gap-12">
           <div>
             <HomeIcon className="ml-2"></HomeIcon>Home
