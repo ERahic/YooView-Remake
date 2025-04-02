@@ -19,27 +19,27 @@ function Header() {
 
   return (
     <>
-      <div className="flex justify-between pb-4">
+      <div className="bg-gray-800 z-50 fixed flex w-full pb-4 debug justify-between">
         {/*Div below will be for logo*/}
-        <div className="fixed left-0 top-0 h-16 w-full ml-6 mt-5">
+        <div className="left-0 top-0 h-auto w-auto ml-6 mt-5 debug inline-flex">
           <IconButton onClick={menuExpand}>
             <MenuButton></MenuButton>
           </IconButton>
-        </div>
-        <div className=" ml-18 flex flex-shrink-0 gap-4">
-          <Image
-            src="/Yooview-logo.png"
-            alt="Logo"
-            width={300}
-            height={300}
-            priority
-          />
+          <div className="flex flex-shrink-0">
+            <Image
+              src="/Yooview-logo.png"
+              alt="Logo"
+              width={300}
+              height={300}
+              priority
+            />
+          </div>
         </div>
         {/*Div below will be for search bar, need to expand and add magnifying glass when clicked on. need microphone button beside search bar*/}
-        <div className="flex justify-center mt-5">
+        <div className="flex mt-5">
           <SearchBar></SearchBar>
         </div>
-        <div className="flex items-center justify-end gap-6 border-1 border-blue-950 rounded-full mt-2">
+        <div className="flex gap-6 border-1 border-blue-950 rounded-full mt-2">
           <IconButton>
             <DarkModeIcon></DarkModeIcon>
           </IconButton>

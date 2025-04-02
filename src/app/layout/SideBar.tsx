@@ -10,10 +10,20 @@ import clsx from "clsx";
 function Sidebar() {
   return (
     <>
-      <div className="fixed left-0 h-full top-16 w-16 p-4 ml-3">
-        <div>test1</div>
-        <div>test2</div>
-        <div>test3</div>
+      <div className="fixed left-0 h-full top-20 w-20 p-4 ml-3 debug">
+        <div className="items-center flex flex-col gap-12">
+          <div>
+            <HomeIcon className="ml-2"></HomeIcon>Home
+          </div>
+          <div>
+            <TheatersIcon className="ml-2"></TheatersIcon>Clips
+          </div>
+          <div>
+            <AutoAwesomeIcon></AutoAwesomeIcon>Stars
+          </div>
+          <EmojiPeopleIcon></EmojiPeopleIcon>You
+        </div>
+        <div></div>
       </div>
     </>
   );

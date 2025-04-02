@@ -5,9 +5,9 @@ import Videos from "@/app/layout/Videos";
 
 export default function Home() {
   return (
-    <div className="relative flex flex-col h-screen">
+    <div className="relative flex flex-col h-screen debug">
       <Header />
-      <div className="flex">
+      <div className="flex mt-16">
         <Sidebar />
         <Videos />
       </div>
