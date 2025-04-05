@@ -16,7 +16,7 @@ function VideoThumbnail(props: VideoThumbnailProps) {
       <img
         src={video.thumbnail}
         alt={video.title}
-        className="w-full h-100 p-2 rounded-lg"
+        className="w-full h-75 p-2 rounded-lg"
       />
       <div className="mt-4">{video.title}</div>
       <div>{video.views}</div>
