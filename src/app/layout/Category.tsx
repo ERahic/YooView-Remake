@@ -5,18 +5,26 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 function Category() {
   return (
     <>
-      <div className="debug fixed bg-gray-800 top-24.5 z-40 h-20 caret-transparent">
-        <div className="debug">
-          <div className="">
+      <div className="fixed top-24.5 z-40 left-24">
+        <div className="">
+          {/*Left Arrow */}
+          <div className="absolute left-0 top-1/2 -translate-y-1/2">
+            <ChevronLeftIcon></ChevronLeftIcon>
+          </div>
+          <div className="flex gap-10 bg-gray-800">
             {/*Placeholder tags */}
             {CategoryPlaceholder.map((category) => (
               <div
-                className="border-1 border-gray-700 p-3 items-center flex bg-gray-700 hover:bg-gray-500"
+                className="border-gray-700 p-3 items-center flex bg-gray-700 hover:bg-gray-500"
                 key={category.id}
               >
                 {category.title}
               </div>
             ))}
+          </div>
+          {/*Right Arrow */}
+          <div className="absolute right-0 top-1/2 -translate-y-1/2">
+            <ChevronRightIcon></ChevronRightIcon>
           </div>
         </div>
       </div>
