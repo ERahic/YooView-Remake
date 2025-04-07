@@ -82,8 +82,8 @@ function Videos() {
   return (
     <>
       <div className="ml-20 mt-5 p-4 w-full h-full max-h-200px max-w-300px bg-gray-800 grid grid-cols-4 gap-5">
-        {placeholderVideos.map((video) => (
-          <VideoThumbnail key={video.id} video={video} />
+        {placeholderVideos.map((Videos) => (
+          <VideoThumbnail key={Videos.id} {...Videos} />
         ))}
       </div>
     </>

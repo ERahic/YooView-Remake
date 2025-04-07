@@ -1,25 +1,22 @@
 //Need to create component for holding video cards in columns for main page
-interface VideoThumbnailProps {
-  video: {
-    id: number;
-    title: string;
-    thumbnail: string;
-    views: string;
-  };
-}
+type Video = {
+  id: number;
+  title: string;
+  thumbnail: string;
+  views: string;
+  category: string;
+};
 
-function VideoThumbnail(props: VideoThumbnailProps) {
-  const { video } = props;
-
+function VideoThumbnail(Videos: Video) {
   return (
     <div className="mt-4 rounded-lg p-2 bg-gray-400 caret-transparent">
       <img
-        src={video.thumbnail}
-        alt={video.title}
+        src={Videos.thumbnail}
+        alt={Videos.title}
         className="w-full h-75 p-2 rounded-lg"
       />
-      <div className="mt-4">{video.title}</div>
-      <div>{video.views}</div>
+      <div className="mt-4">{Videos.title}</div>
+      <div>{Videos.views}</div>
     </div>
   );
 }
