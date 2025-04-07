@@ -7,7 +7,7 @@ import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 function Sidebar() {
   return (
     <>
-      <div className="fixed left-0 h-full top-24 w-20 p-4 pl-4 bg-gray-800 caret-transparent">
+      <div className="fixed left-0 h-full top-42 w-20 p-4 pl-4 bg-gray-800 caret-transparent">
         <div className="items-center flex flex-col gap-12">
           <div>
             <HomeIcon className="ml-2"></HomeIcon>Home

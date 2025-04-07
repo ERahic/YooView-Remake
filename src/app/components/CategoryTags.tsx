@@ -1,9 +1,9 @@
 // category tags will be made here, first placeholder then actual data being fetched
 
-interface CategoryTag {
+type CategoryTag = {
   id: number;
   title: string;
-}
+};
 
 export const CategoryPlaceholder: CategoryTag[] = [
   { id: 1, title: "All" },
