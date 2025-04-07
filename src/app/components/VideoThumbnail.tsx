@@ -7,16 +7,16 @@ type Video = {
   category: string;
 };
 
-function VideoThumbnail(Videos: Video) {
+function VideoThumbnail(video: Video) {
   return (
     <div className="mt-4 rounded-lg p-2 bg-gray-400 caret-transparent">
       <img
-        src={Videos.thumbnail}
-        alt={Videos.title}
+        src={video.thumbnail}
+        alt={video.title}
         className="w-full h-75 p-2 rounded-lg"
       />
-      <div className="mt-4">{Videos.title}</div>
-      <div>{Videos.views}</div>
+      <div className="mt-4">{video.title}</div>
+      <div>{video.views}</div>
     </div>
   );
 }
