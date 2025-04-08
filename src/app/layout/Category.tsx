@@ -11,11 +11,11 @@ function Category() {
           <div className="absolute left-0 top-1/2 -translate-y-1/2">
             <ChevronLeftIcon></ChevronLeftIcon>
           </div>
-          <div className="flex gap-10 bg-gray-800 pl-6 pr-6">
+          <div className="flex gap-10 bg-gray-800 pl-6 pr-36">
             {/*Placeholder tags */}
             {CategoryPlaceholder.map((category) => (
               <div
-                className="border-gray-700 p-3 items-center flex bg-gray-700 hover:bg-gray-500"
+                className="border-gray-700 p-2 items-center flex bg-gray-700 hover:bg-gray-500"
                 key={category.id}
               >
                 {category.title}

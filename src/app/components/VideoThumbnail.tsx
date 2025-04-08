@@ -1,5 +1,5 @@
 //Need to create component for holding video cards in columns for main page
-type Video = {
+type VideoType = {
   id: number;
   title: string;
   thumbnail: string;
@@ -7,7 +7,11 @@ type Video = {
   category: string;
 };
 
-function VideoThumbnail(video: Video) {
+type Props = {
+  video: VideoType;
+};
+
+function VideoThumbnail({ video }: Props) {
   return (
     <div className="mt-4 rounded-lg p-2 bg-gray-400 caret-transparent">
       <img
