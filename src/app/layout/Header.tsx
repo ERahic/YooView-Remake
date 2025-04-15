@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import Image from "next/image";
 import IconButton from "@mui/material/IconButton";
@@ -7,6 +8,7 @@ import Avatar from "@mui/material/Avatar";
 import MenuButton from "@mui/icons-material/Menu";
 import SearchBar from "../components/SearchBar";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 
 // USE OAUTH FOR LOGIN IN THE FUTURE
 // Need to add yooview logo onto left side of header, search bar will be in middle as input, right side will hold notification buttons
@@ -46,7 +48,7 @@ function Header() {
           <IconButton>
             <NotificationsIcon></NotificationsIcon>
           </IconButton>
-          <IconButton>
+          <IconButton onClick={() => signIn()} aria-label="Sign In">
             <Avatar></Avatar>
           </IconButton>
         </div>
