@@ -2,6 +2,11 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
+// Will include a check to make sure that clientId and clientSecret do exist before the NextAuth() is called, otherwise, typescript will throw error stating that these variables could also be undefined and not assignable to type string
+if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+  throw Error(`Warning! Missing Google OAUTH environment variables!`);
+}
+
 //Provider Configuration, when writing GoogleProvider, it means using OAUTH 2.0 as the provider for this app
 export default NextAuth({
   providers: [
