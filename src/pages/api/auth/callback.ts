@@ -13,29 +13,28 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { authorizationCode } = req.query; // This will be the authorization code that google provides user
+  const { code: authorizationCode } = req.query; // This will be the authorization code that google provides user
 
   // Will throw in error in case the authorizationCode is not a string for type efficiency
   if (typeof authorizationCode !== "string") {
-    res.status(400).json({ error: "Authorization code is invalid!" });
-    return;
+    return res.status(400).json({ error: "Authorization code is invalid!" });
   }
 
   try {
     // If the authorizationCode is a string, we will exchange the code for an accessToken
     const tokenResponse = await axios.post(
       `https://oauth2.googleapis.com/token`,
-      null,
-      {
-        params: {
-          authorizationCode,
+      new URLSearchParams(
+        {
+          code: authorizationCode,
           client_id: process.env.GOOGLE_CLIENT_ID,
           client_secret: process.env.GOOGLE_CLIENT_SECRET,
           redirect_uri: process.env.GOOGLE_REDIRECT_URI,
-          grant_type: "authorization code",
-        },
-      }
+          grant_type: "authorization_code",
+        }.toString() // This will form body data as a query string
+      )
     );
+    // define the access_token variable by extracting data from tokenResponse
     const { access_token } = tokenResponse.data;
 
     // Will use getIronSession to get the session object
