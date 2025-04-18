@@ -8,7 +8,8 @@ import Avatar from "@mui/material/Avatar";
 import MenuButton from "@mui/icons-material/Menu";
 import SearchBar from "../components/SearchBar";
 import { useState } from "react";
-import { signIn } from "next-auth/react";
+// import { signIn } from "next-auth/react"; outdated for this project since Iron-session will be used
+import Link from "next/link"; // Will need this in order to redirect the user to google login page
 
 // USE OAUTH FOR LOGIN IN THE FUTURE
 // Need to add yooview logo onto left side of header, search bar will be in middle as input, right side will hold notification buttons
@@ -48,8 +49,10 @@ function Header() {
           <IconButton>
             <NotificationsIcon></NotificationsIcon>
           </IconButton>
-          <IconButton onClick={() => signIn()} aria-label="Sign In">
-            <Avatar></Avatar>
+          <IconButton aria-label="Sign In">
+            <Link href="api/auth/login">
+              <Avatar></Avatar>
+            </Link>
           </IconButton>
         </div>
       </div>

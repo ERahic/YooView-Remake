@@ -8,7 +8,7 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node", //Have to switch from bundler to node in order for iron-sessions to work properly, will lose turbopack since its part of bundler but oh well
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
