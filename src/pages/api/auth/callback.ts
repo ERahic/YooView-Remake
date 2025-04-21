@@ -3,11 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import { getIronSession } from "iron-session";
 import { sessionOptions } from "../../../app/lib/session";
-
-// Need to extend the type of SessionData to accept accessTokens as strings
-type SessionData = {
-  accessToken?: string;
-};
+import type { SessionData } from "@/app/lib/session";
 
 export default async function handler(
   req: NextApiRequest,
@@ -24,16 +20,20 @@ export default async function handler(
     // If the authorizationCode is a string, we will exchange the code for an accessToken
     const tokenResponse = await axios.post(
       `https://oauth2.googleapis.com/token`,
-      new URLSearchParams(
-        {
-          code: authorizationCode,
-          client_id: process.env.GOOGLE_CLIENT_ID,
-          client_secret: process.env.GOOGLE_CLIENT_SECRET,
-          redirect_uri: process.env.GOOGLE_REDIRECT_URI,
-          grant_type: "authorization_code",
-        }.toString() // This will form body data as a query string
-      )
+      new URLSearchParams({
+        code: authorizationCode,
+        client_id: process.env.GOOGLE_CLIENT_ID!,
+        client_secret: process.env.GOOGLE_CLIENT_SECRET!,
+        redirect_uri: process.env.GOOGLE_REDIRECT_URI!,
+        grant_type: "authorization_code",
+      }),
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded", // Headers was added to make absolute sure that Google will accept the requested format
+        },
+      }
     );
+
     // define the access_token variable by extracting data from tokenResponse
     const { access_token } = tokenResponse.data;
 
@@ -41,6 +41,7 @@ export default async function handler(
     const session = await getIronSession<SessionData>(req, res, sessionOptions);
     session.accessToken = access_token;
     await session.save();
+    console.log(`Session After Login:`, session);
 
     // The user will be redirected to the home page after successfully logging in
     res.redirect("/");

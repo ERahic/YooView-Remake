@@ -8,6 +8,7 @@ import Avatar from "@mui/material/Avatar";
 import MenuButton from "@mui/icons-material/Menu";
 import SearchBar from "../components/SearchBar";
 import { useState } from "react";
+import GoogAuthButton from "../components/Buttons";
 // import { signIn } from "next-auth/react"; outdated for this project since Iron-session will be used
 
 // USE OAUTH FOR LOGIN IN THE FUTURE
@@ -25,7 +26,7 @@ function Header() {
         {/*Div below will be for logo*/}
         <div className="left-0 top-0 h-auto w-auto ml-3 mt-5 inline-flex">
           <IconButton onClick={menuExpand}>
-            <MenuButton></MenuButton>
+            <MenuButton style={{ color: "white" }}></MenuButton>
           </IconButton>
           <div className="flex flex-shrink-0 ml-4">
             <Image
@@ -43,19 +44,16 @@ function Header() {
         </div>
         <div className="flex gap-6 border-1 border-blue-950 rounded-full mt-4 mr-4 p-1">
           <IconButton>
-            <DarkModeIcon></DarkModeIcon>
+            <DarkModeIcon style={{ color: "white" }}></DarkModeIcon>
           </IconButton>
           <IconButton>
-            <NotificationsIcon></NotificationsIcon>
+            <NotificationsIcon style={{ color: "white" }}></NotificationsIcon>
           </IconButton>
-          <IconButton
-            onClick={() => {
-              window.location.href = "api/auth/login";
-            }}
-            aria-label="Sign In"
-          >
-            <Avatar></Avatar>
-          </IconButton>
+          <GoogAuthButton>
+            <IconButton aria-label="Sign In">
+              <Avatar></Avatar>
+            </IconButton>
+          </GoogAuthButton>
         </div>
       </div>
     </>

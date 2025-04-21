@@ -10,16 +10,29 @@ function Sidebar() {
       <div className="fixed left-0 h-full top-24 w-20 p-4 pl-4 bg-gray-800 caret-transparent">
         <div className="items-center flex flex-col gap-12">
           <div>
-            <HomeIcon className="ml-2"></HomeIcon>Home
+            <HomeIcon className="ml-2" style={{ color: "white" }}></HomeIcon>
+            Home
           </div>
           <div>
-            <TheatersIcon className="ml-2"></TheatersIcon>Clips
+            <TheatersIcon
+              className="ml-2"
+              style={{ color: "white" }}
+            ></TheatersIcon>
+            Clips
           </div>
           <div>
-            <AutoAwesomeIcon className="ml-2"></AutoAwesomeIcon>Stars
+            <AutoAwesomeIcon
+              className="ml-2"
+              style={{ color: "white" }}
+            ></AutoAwesomeIcon>
+            Stars
           </div>
           <div>
-            <EmojiPeopleIcon className="ml-2"></EmojiPeopleIcon>You
+            <EmojiPeopleIcon
+              className="ml-2"
+              style={{ color: "white" }}
+            ></EmojiPeopleIcon>
+            You
           </div>
         </div>
       </div>

@@ -39,13 +39,13 @@ function SearchBar() {
         </div>
         <div className="border-1 border-blue-950 rounded-full">
           <IconButton>
-            <SearchIcon></SearchIcon>
+            <SearchIcon style={{ color: "white" }}></SearchIcon>
           </IconButton>
         </div>
         {/*Microphone*/}
         <div className="border-1 border-blue-950 rounded-full">
           <IconButton>
-            <MicIcon></MicIcon>
+            <MicIcon style={{ color: "white" }}></MicIcon>
           </IconButton>
         </div>
       </div>
