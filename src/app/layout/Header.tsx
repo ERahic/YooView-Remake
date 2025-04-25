@@ -4,7 +4,6 @@ import Image from "next/image";
 import IconButton from "@mui/material/IconButton";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import Avatar from "@mui/material/Avatar";
 import MenuButton from "@mui/icons-material/Menu";
 import SearchBar from "../components/SearchBar";
 import { useState } from "react";
@@ -49,11 +48,7 @@ function Header() {
           <IconButton>
             <NotificationsIcon style={{ color: "white" }}></NotificationsIcon>
           </IconButton>
-          <GoogAuthButton>
-            <IconButton aria-label="Sign In">
-              <Avatar></Avatar>
-            </IconButton>
-          </GoogAuthButton>
+          <GoogAuthButton />
         </div>
       </div>
     </>

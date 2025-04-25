@@ -2,8 +2,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import { getIronSession } from "iron-session";
-import { sessionOptions } from "../../../app/lib/session";
-import type { SessionData } from "@/app/lib/session";
+import { sessionOptions } from "../lib/session";
+import type { SessionData } from "@/pages/api/lib/session";
 
 export default async function handler(
   req: NextApiRequest,
@@ -27,22 +27,37 @@ export default async function handler(
         redirect_uri: process.env.GOOGLE_REDIRECT_URI!,
         grant_type: "authorization_code",
       }),
+      // Headers was added to make absolute sure that Google will accept the requested format
       {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded", // Headers was added to make absolute sure that Google will accept the requested format
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       }
     );
-
     // define the access_token variable by extracting data from tokenResponse
     const { access_token } = tokenResponse.data;
 
+    // The access will now let us get the users profile
+    const userInfoRes = await axios.get(
+      "https://www.googleapis.com/oauth2/v3/userinfo",
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
     // Will use getIronSession to get the session object
+    const user = userInfoRes.data;
     const session = await getIronSession<SessionData>(req, res, sessionOptions);
     session.accessToken = access_token;
+    session.user = {
+      name: user.name,
+      email: user.email,
+      picture: user.picture,
+    };
     await session.save();
-    console.log(`Session After Login:`, session);
 
+    console.log(`Session After Login:`, session);
     // The user will be redirected to the home page after successfully logging in
     res.redirect("/");
   } catch (error) {
