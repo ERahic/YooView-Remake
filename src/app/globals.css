@@ -28,3 +28,12 @@ body {
 .debug {
   border: 1px solid red;
 }
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /*Microsoft Edge or Internet Explorer*/
+  scrollbar-width: none; /*Firefox*/
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /*OperaGX, Chrome, Safari*/
+}
