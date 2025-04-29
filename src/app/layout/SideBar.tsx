@@ -4,34 +4,34 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import TheatersIcon from "@mui/icons-material/Theaters";
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 
-function Sidebar() {
+// Need to pass menuExpand from header to sidebar as prop in order for menu expansion to work
+type SidebarProps = {
+  menuExpand: boolean;
+};
+
+function Sidebar({ menuExpand }: SidebarProps) {
+  console.log("sidebar expanded", menuExpand);
   return (
     <>
-      <div className="fixed left-0 h-full top-24 w-20 p-4 pl-4 bg-gray-800 caret-transparent">
-        <div className="items-center flex flex-col gap-12">
-          <div>
-            <HomeIcon className="ml-2" style={{ color: "white" }}></HomeIcon>
+      <div
+        className="fixed left-0 h-full top-24 p-4 pl-4 transition-all duration-500 bg-gray-800 rounded-lg overflow-hidden caret-transparent"
+        style={{ width: menuExpand ? "20rem" : "6rem" }} // Have to use style due to tailwind
+      >
+        <div className="flex flex-col items-center gap-20 text-center">
+          <div className="flex flex-col items-center gap-2">
+            <HomeIcon style={{ color: "white" }}></HomeIcon>
             Home
           </div>
-          <div>
-            <TheatersIcon
-              className="ml-2"
-              style={{ color: "white" }}
-            ></TheatersIcon>
+          <div className="flex flex-col items-center gap-2">
+            <TheatersIcon style={{ color: "white" }}></TheatersIcon>
             Clips
           </div>
-          <div>
-            <AutoAwesomeIcon
-              className="ml-2"
-              style={{ color: "white" }}
-            ></AutoAwesomeIcon>
+          <div className="flex flex-col items-center gap-2">
+            <AutoAwesomeIcon style={{ color: "white" }}></AutoAwesomeIcon>
             Stars
           </div>
-          <div>
-            <EmojiPeopleIcon
-              className="ml-2"
-              style={{ color: "white" }}
-            ></EmojiPeopleIcon>
+          <div className="flex flex-col items-center gap-2">
+            <EmojiPeopleIcon style={{ color: "white" }}></EmojiPeopleIcon>
             You
           </div>
         </div>

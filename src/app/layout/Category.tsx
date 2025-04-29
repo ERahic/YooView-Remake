@@ -55,8 +55,8 @@ function Category() {
   return (
     <>
       <div className="fixed top-24 left-20 right-0 z-40 caret-transparent">
-        {/*Left Fade Effect*/}
         <div className="relative mx-auto max-w-[1200px] flex items-center bg-gray-800 rounded-lg">
+          {/*Left Fade Effect*/}
           {leftArrowShow && (
             <div className="pointer-events-none absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-gray-800 to-transparent z-20" />
           )}
