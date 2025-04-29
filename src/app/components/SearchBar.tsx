@@ -25,9 +25,9 @@ function SearchBar() {
             type="text"
             placeholder="Search!"
             className={clsx(
-              "border-1 border-blue-950 rounded-full w-150 text-start pl-4",
+              "border-1 border-blue-500 rounded-full w-150 text-start pl-4",
               {
-                "border-1 border-blue-950 rounded-full w-150 text-start pl-4 caret-transparent":
+                "border-1 border-blue-500 rounded-full w-150 text-start pl-4 caret-transparent":
                   !searchClicked,
                 "outline-none border-1 border-green-800 rounded-full w-175 text-start pl-12":
                   searchClicked,

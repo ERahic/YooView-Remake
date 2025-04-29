@@ -6,11 +6,20 @@ import Category from "@/app/layout/Category";
 
 export default function Home() {
   return (
-    <div className="relative flex flex-col h-screen bg-gray-800">
+    <div className="relative flex flex-col min-h-screen bg-blue-950">
       <Header />
-      <Category />
+      {/*Wrapper for category background width stretch */}
+      <div className="relative">
+        {/*Code below is to make the width of category component stretch while keeping tags and chevron arrows in middle */}
+        <div className="fixed top-24 left-0 w-full h-14 z-10 bg-blue-950  ml-24"></div>
+
+        <div className="relative z-20">
+          <Category />
+        </div>
+      </div>
+
       <div className="flex mt-32">
-        <Sidebar />
+        <Sidebar menuExpand={false} />
         <Videos />
       </div>
     </div>

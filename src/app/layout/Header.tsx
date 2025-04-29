@@ -22,7 +22,7 @@ function Header() {
 
   return (
     <>
-      <div className="bg-gray-800 z-50 fixed flex w-full pb-4 top-0 justify-between">
+      <div className="bg-blue-950 z-50 fixed flex w-full pb-4 top-0 justify-between">
         {/*Div below will be for logo*/}
         <div className="left-0 top-0 h-auto w-auto ml-7 mt-5 inline-flex">
           <IconButton onClick={menuExpand}>

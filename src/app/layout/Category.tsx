@@ -8,7 +8,15 @@ function Category() {
   const scrollbarRef = useRef<HTMLDivElement>(null);
 
   const handleScrollLeft = () => {
-    scrollbarRef.current?.scrollBy({ left: -300, behavior: "smooth" });
+    // wrapping this just to have first category tag not go all the way to the right when raching max scroll on left chevron
+    const container = scrollbarRef.current;
+    if (!container) return;
+
+    if (container.scrollLeft <= 25) {
+      container.scrollTo({ left: 25, behavior: "smooth" });
+    } else {
+      scrollbarRef.current?.scrollBy({ left: -300, behavior: "smooth" });
+    }
     setTimeout(handleScroll, 400); // delay after clicking chevron in order for chevron arrow fades to work
   };
   const handleScrollRight = () => {
@@ -30,7 +38,7 @@ function Category() {
     const clientWidth = scrollBarContainer.clientWidth;
 
     // left arrow visiblity will be updated
-    setLeftArrowShow(scrollLeft > 0);
+    setLeftArrowShow(scrollLeft > 10);
 
     // right arrow visibility updated too
     setRightArrowShow(scrollLeft + clientWidth < scrollWidth - 10); // - 10 added due to relative scroll not recognizing few hidden pixels for chevron right arrow to be hidden
@@ -39,6 +47,9 @@ function Category() {
   useEffect(() => {
     const scrollBarContainer = scrollbarRef.current;
     if (!scrollBarContainer) return;
+
+    // Just to have both chevron arrows appear and category tags closer to left arrow for better view of page
+    scrollBarContainer.scrollBy({ left: 100, behavior: "instant" });
 
     // add event listener for container
     scrollBarContainer.addEventListener("scroll", handleScroll);
@@ -54,15 +65,15 @@ function Category() {
 
   return (
     <>
-      <div className="fixed top-24 left-20 right-0 z-40 caret-transparent">
-        <div className="relative mx-auto max-w-[1200px] flex items-center bg-gray-800 rounded-lg">
+      <div className="fixed top-24 left-20 right-0 z-20 caret-transparent">
+        <div className="relative mx-auto max-w-[1200px] flex items-center bg-blue-950 rounded-lg">
           {/*Left Fade Effect*/}
           {leftArrowShow && (
-            <div className="pointer-events-none absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-gray-800 to-transparent z-20" />
+            <div className="pointer-events-none absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-blue-950/80 to-transparent z-20" />
           )}
           {/*Right Fade Effect*/}
           {rightArrowShow && (
-            <div className="pointer-events-none absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-gray-800 to-transparent z-20" />
+            <div className="pointer-events-none absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-blue-950/80 to-transparent z-20" />
           )}
           {/*Conditional render for when chevron arrow should hide when reaching max scroll point for either side*/}
           {/*Left Arrow Chevron*/}
@@ -90,7 +101,7 @@ function Category() {
               className="flex gap-8 pt-2 pb-2 pl-32 pr-32 overflow-x-auto scrollbar-hide whitespace-nowrap overflow-hidden"
             >
               {/*Left ghost spacer*/}
-              <div className="shrink-0 w-56" />
+              <div className="shrink-0 w-2" />
               {/*Category tag placeholders*/}
               {CategoryPlaceholder.map((category) => (
                 <div
@@ -101,7 +112,7 @@ function Category() {
                 </div>
               ))}
               {/*Right ghost Spacer*/}
-              <div className="shrink-0 w-56" />
+              <div className="shrink-0 w-2" />
             </div>
           </div>
         </div>
