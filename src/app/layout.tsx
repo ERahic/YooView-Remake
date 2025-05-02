@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "next-themes";
 //Importing SessionProviderWrapper in order to have OAUTH run on the entire app without server component throwing errors for attempting to use
 // import SessionProviderWrapper from "./components/SessionProviderWrapper"; No longer using nextAuth, using iron-session
 
@@ -28,15 +27,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-blue-950 text-white dark:bg-black dark:text-yellow-500 transition-colors duration-500`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem={false}
-        >
-          {children}
-        </ThemeProvider>
+        {children}
       </body>
     </html>
   );

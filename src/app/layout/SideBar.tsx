@@ -12,7 +12,7 @@ import BugReportIcon from "@mui/icons-material/BugReport";
 
 // Need to pass menuExpand from header to sidebar as prop in order for menu expansion to work
 type SidebarProps = {
-  menuExpand: boolean;
+  menuExpand?: boolean; // putting a question mark will make this more optional
 };
 
 // Creating an array of sidebar icons that will include icons that only appear when sidebar is expanded, easier setup then to manually put each icon into its own div
@@ -29,7 +29,7 @@ const sideBarIcons = [
   { id: 10, icon: CoffeeIcon, label: "Coffee", alwaysVisible: false },
 ];
 
-function Sidebar({ menuExpand }: SidebarProps) {
+function Sidebar({ menuExpand = false }: SidebarProps) {
   console.log("sidebar expanded", menuExpand);
 
   // Creating a variable that will map each sidebar option and have the extras appear on condition that menu expanded is true
@@ -42,7 +42,7 @@ function Sidebar({ menuExpand }: SidebarProps) {
           key={id}
           className={`flex items-center text-white mt-10 ${
             menuExpand
-              ? "flex-row justify-start pl-24 gap-6 text-lg"
+              ? "flex-row justify-start pl-4 gap-6 text-lg"
               : "flex-col"
           } hover: cursor-pointer`}
         >
@@ -62,8 +62,8 @@ function Sidebar({ menuExpand }: SidebarProps) {
   return (
     <>
       <div
-        className="fixed flex flex-col left-0 h-full top-24 p-4 pl-4 transition-all duration-500 bg-blue-950 text-white rounded-lg overflow-hidden caret-transparent dark:bg-black dark:text-yellow-500"
-        style={{ width: menuExpand ? "22rem" : "6rem" }} // Have to use style due to tailwind
+        className="fixed flex flex-col left-0 h-full top-24 p-4 pl-4 transition-all duration-500 bg-blue-950 rounded-lg overflow-hidden caret-transparent"
+        style={{ width: menuExpand ? "16rem" : "6rem" }} // Have to use style due to tailwind
       >
         {sideBarList}
       </div>

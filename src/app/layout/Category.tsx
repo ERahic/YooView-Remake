@@ -66,14 +66,14 @@ function Category() {
   return (
     <>
       <div className="fixed top-24 left-20 right-0 z-20 caret-transparent">
-        <div className="relative mx-auto max-w-[1200px] flex items-center bg-blue-950 text-white rounded-lg dark:bg-black dark:text-yellow-500">
+        <div className="relative mx-auto max-w-[1200px] flex items-center bg-blue-950 rounded-lg">
           {/*Left Fade Effect*/}
           {leftArrowShow && (
-            <div className="pointer-events-none absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-blue-950/80 dark:from-yellow-100/80 to-transparent z-20" />
+            <div className="pointer-events-none absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-blue-950/80 to-transparent z-20" />
           )}
           {/*Right Fade Effect*/}
           {rightArrowShow && (
-            <div className="pointer-events-none absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-blue-950/80 dark:from-yellow-100/80 to-transparent z-20" />
+            <div className="pointer-events-none absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-blue-950/80 to-transparent z-20" />
           )}
           {/*Conditional render for when chevron arrow should hide when reaching max scroll point for either side*/}
           {/*Left Arrow Chevron*/}

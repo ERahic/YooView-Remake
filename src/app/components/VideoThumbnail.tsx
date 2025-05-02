@@ -13,7 +13,7 @@ type Props = {
 
 function VideoThumbnail({ video }: Props) {
   return (
-    <div className="mt-4 rounded-lg p-2 bg-gray-400 caret-transparent">
+    <div className="mt-4 rounded-lg p-2 bg-gray-600 caret-transparent">
       <img
         src={video.thumbnail}
         alt={video.title}
