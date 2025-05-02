@@ -38,7 +38,7 @@ function Category() {
     const clientWidth = scrollBarContainer.clientWidth;
 
     // left arrow visiblity will be updated
-    setLeftArrowShow(scrollLeft > 10);
+    setLeftArrowShow(scrollLeft > 25);
 
     // right arrow visibility updated too
     setRightArrowShow(scrollLeft + clientWidth < scrollWidth - 10); // - 10 added due to relative scroll not recognizing few hidden pixels for chevron right arrow to be hidden
@@ -66,14 +66,14 @@ function Category() {
   return (
     <>
       <div className="fixed top-24 left-20 right-0 z-20 caret-transparent">
-        <div className="relative mx-auto max-w-[1200px] flex items-center bg-blue-950 rounded-lg">
+        <div className="relative mx-auto max-w-[1200px] flex items-center bg-blue-950 text-white rounded-lg dark:bg-black dark:text-yellow-500">
           {/*Left Fade Effect*/}
           {leftArrowShow && (
-            <div className="pointer-events-none absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-blue-950/80 to-transparent z-20" />
+            <div className="pointer-events-none absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-blue-950/80 dark:from-yellow-100/80 to-transparent z-20" />
           )}
           {/*Right Fade Effect*/}
           {rightArrowShow && (
-            <div className="pointer-events-none absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-blue-950/80 to-transparent z-20" />
+            <div className="pointer-events-none absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-blue-950/80 dark:from-yellow-100/80 to-transparent z-20" />
           )}
           {/*Conditional render for when chevron arrow should hide when reaching max scroll point for either side*/}
           {/*Left Arrow Chevron*/}
@@ -98,7 +98,7 @@ function Category() {
           <div className="flex-1 overflow-hidden">
             <div
               ref={scrollbarRef}
-              className="flex gap-8 pt-2 pb-2 pl-32 pr-32 overflow-x-auto scrollbar-hide whitespace-nowrap overflow-hidden"
+              className="scroll-smooth flex gap-8 pt-2 pb-2 pl-32 pr-32 overflow-x-auto scrollbar-hide whitespace-nowrap overflow-hidden"
             >
               {/*Left ghost spacer*/}
               <div className="shrink-0 w-2" />
@@ -106,7 +106,7 @@ function Category() {
               {CategoryPlaceholder.map((category) => (
                 <div
                   key={category.id}
-                  className="border border-gray-700 p-2 bg-gray-700 hover:bg-gray-500 px-6 rounded-full min-w-fit"
+                  className="border select-none border-gray-700 p-2 bg-gray-700 hover:bg-gray-500 px-6 rounded-full min-w-fit"
                 >
                   {category.title}
                 </div>

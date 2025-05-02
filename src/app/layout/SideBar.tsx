@@ -62,7 +62,7 @@ function Sidebar({ menuExpand }: SidebarProps) {
   return (
     <>
       <div
-        className="fixed flex flex-col left-0 h-full top-24 p-4 pl-4 transition-all duration-500 bg-blue-950 rounded-lg overflow-hidden caret-transparent"
+        className="fixed flex flex-col left-0 h-full top-24 p-4 pl-4 transition-all duration-500 bg-blue-950 text-white rounded-lg overflow-hidden caret-transparent dark:bg-black dark:text-yellow-500"
         style={{ width: menuExpand ? "22rem" : "6rem" }} // Have to use style due to tailwind
       >
         {sideBarList}

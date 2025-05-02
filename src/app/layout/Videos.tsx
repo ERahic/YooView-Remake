@@ -94,7 +94,7 @@ function Videos() {
   // {...} spread used to display each video held in the placeholder Videos variable
   return (
     <>
-      <div className="ml-20 mt-5 p-4 w-full h-full max-h-200px max-w-300px bg-blue-950 grid grid-cols-4 gap-5">
+      <div className="ml-20 mt-5 p-4 w-full h-full max-h-200px max-w-300px bg-blue-950 text-white dark:bg-black dark:text-yellow-500 grid grid-cols-4 gap-5">
         {placeholderVideos.map((video) => (
           <VideoThumbnail key={video.id} video={video} />
         ))}

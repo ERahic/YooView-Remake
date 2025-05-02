@@ -1,5 +1,6 @@
 const config = {
-  content: ["./src/**/*.{ts,tsx}"], // this is important!
+  darkMode: "class",
+  content: ["./app/**/*.{js,ts,jsx,tsx}", "./src/**/*.{js,ts,jsx,tsx}"], // this is important!
   theme: {
     extend: {},
   },
