@@ -6,9 +6,10 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MenuButton from "@mui/icons-material/Menu";
 import SearchBar from "../components/SearchBar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import GoogAuthButton from "../components/Buttons/GoogleAuthButton";
 import Sidebar from "@/app/layout/SideBar";
+import { User } from "@/pages/api/lib/session";
 // import { signIn } from "next-auth/react"; outdated for this project since Iron-session will be used
 
 // USE OAUTH FOR LOGIN IN THE FUTURE
@@ -20,11 +21,22 @@ function Header() {
     setMenuPressed(!menuPressed);
   };
 
+  // useState for when user is logged in, they will be greeted by their name
+  const [user, setUser] = useState<User | null>(null);
+
+  // useEffect for immediately fetching the users name in order to display it when page loads after login
+  useEffect(() => {
+    fetch("/api/lib/session")
+      .then((res) => res.json())
+      .then((data) => {
+        setUser(data.user ?? null);
+      });
+  }, []); // add empty array [] or else useEffect will be constantly active
   return (
     <>
-      <div className="bg-blue-950 z-50 fixed flex w-full pb-4 top-0 justify-between">
-        {/*Div below will be for logo*/}
-        <div className="left-0 top-0 h-auto w-auto ml-7 mt-5 inline-flex">
+      <div className="bg-blue-950 z-50 fixed flex w-full pb-4 top-0 justify-between items-center">
+        {/*Div below will be for logo and menu button*/}
+        <div className="flex mt-5 ml-6 items-center">
           <IconButton onClick={menuExpand}>
             <MenuButton style={{ color: "white" }}></MenuButton>
           </IconButton>
@@ -38,18 +50,30 @@ function Header() {
             />
           </div>
         </div>
-        {/*Div below will be for search bar, need to expand and add magnifying glass when clicked on. need microphone button beside search bar*/}
-        <div className="flex mt-8 mb-2 mr-10">
-          <SearchBar></SearchBar>
-        </div>
-        <div className="flex gap-6 border-1 border-blue-950 rounded-full mt-4 mr-4 p-1">
-          <IconButton>
-            <DarkModeIcon style={{ color: "white" }}></DarkModeIcon>
-          </IconButton>
-          <IconButton>
-            <NotificationsIcon style={{ color: "white" }}></NotificationsIcon>
-          </IconButton>
-          <GoogAuthButton />
+
+        {/*Div Wrapper for searchbar and greeting */}
+        <div className="flex items-center gap-6">
+          {/*Div below will be for search bar, need to expand and add magnifying glass when clicked on. need microphone button beside search bar*/}
+          <div className="absolute left-1/2 transform -translate-x-1/2 mt-6">
+            <SearchBar></SearchBar>
+          </div>
+          <div className="mt-5 mr-50 text-4xl">
+            {user && (
+              <div className="text-white font-bold whitespace-nowrap select-none">
+                Welcome {user.name ? ` ${user.name.split(" ")[0]}` : ""}!
+              </div>
+            )}
+          </div>
+          {/*Wrapper for dark mode, notification bell, profile */}
+          <div className="flex items-center gap-6 mr-8 p-1 mt-5">
+            <IconButton>
+              <DarkModeIcon style={{ color: "white" }}></DarkModeIcon>
+            </IconButton>
+            <IconButton>
+              <NotificationsIcon style={{ color: "white" }}></NotificationsIcon>
+            </IconButton>
+            <GoogAuthButton />
+          </div>
         </div>
       </div>
       <Sidebar menuExpand={menuPressed} />
