@@ -60,7 +60,7 @@ function Header() {
           <div className="mt-5 mr-50 text-4xl">
             {user && (
               <div className="text-white font-bold whitespace-nowrap select-none">
-                Welcome {user.name ? ` ${user.name.split(" ")[0]}` : ""}!
+                Welcome, {user.name ? ` ${user.name.split(" ")[0]}` : ""}!
               </div>
             )}
           </div>

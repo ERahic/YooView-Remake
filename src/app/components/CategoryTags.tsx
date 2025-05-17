@@ -1,6 +1,6 @@
 // category tags will be made here, first placeholder then actual data being fetched
 
-type CategoryTag = {
+export type CategoryTag = {
   id: number;
   title: string;
 };
@@ -16,15 +16,15 @@ export const CategoryPlaceholder: CategoryTag[] = [
   { id: 8, title: "Animals" },
   { id: 9, title: "Live Stream" },
   { id: 10, title: "Politics" },
-  { id: 11, title: "Politics" },
-  { id: 12, title: "Politics" },
-  { id: 13, title: "Politics" },
-  { id: 14, title: "Politics" },
-  { id: 15, title: "Politics" },
-  { id: 16, title: "Politics" },
-  { id: 17, title: "Politics" },
-  { id: 18, title: "Politics" },
-  { id: 19, title: "Politics" },
-  { id: 20, title: "Politics" },
-  { id: 21, title: "Politics" },
+  { id: 11, title: "Podcast" },
+  { id: 12, title: "Anime" },
+  { id: 13, title: "Comics & Manga" },
+  { id: 14, title: "Health" },
+  { id: 15, title: "International" },
+  { id: 16, title: "Education" },
+  { id: 17, title: "History" },
+  { id: 18, title: "Cars" },
+  { id: 19, title: "Tourism" },
+  { id: 20, title: "Coding" },
+  { id: 21, title: "NHL" },
 ];
