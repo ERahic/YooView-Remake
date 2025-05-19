@@ -14,7 +14,7 @@ function SearchBar() {
   // use clsx and useState to make search bar expand a bit when clicked on,
   return (
     <>
-      <div className="flex gap-2">
+      <div className="flex gap-2 pl-24">
         {/*Search Bar*/}
         {/*Magnifying glass appears when searchbar is clicked on*/}
         <div className="relative flex">

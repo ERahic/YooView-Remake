@@ -4,10 +4,25 @@ import VideoThumbnail, { VideoType } from "../components/VideoThumbnail";
 import { useState, useEffect } from "react";
 import { placeholderVideos } from "@/VideoPlaceholders";
 
+// Defining what type YoutubeVideoData props will be in order to avoid using "any" when using data thats fetched from API
+type YoutubeVideoData = {
+  id: string;
+  snippet: {
+    title: string;
+    thumbnails: {
+      medium: {
+        url: string;
+      };
+    };
+  };
+  statistics: {
+    viewCount: string;
+  };
+};
+
 function Videos() {
   // will create useState for both videotype and for checking if the user is logged in, fetched video data will only appear when user logs in
   const [videos, setVideos] = useState<VideoType[]>([]);
-  const [loggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   // useEffect will immediately fetch video data and display when user logs in
   useEffect(() => {
@@ -15,8 +30,7 @@ function Videos() {
       .then((res) => res.json())
       .then((data) => {
         if (data.accessToken) {
-          // when setLoggedIn is true, it will fetch the data for videos, else it would use placeholders
-          setIsLoggedIn(true);
+          // when there is an accesstoken, it will fetch the data for videos, else it would use placeholders
           fetchYoutubeVideos(data.accessToken);
         } else {
           setVideos(placeholderVideos);
@@ -28,7 +42,7 @@ function Videos() {
   const fetchYoutubeVideos = async (accessToken: string) => {
     try {
       const response = await fetch(
-        "https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=12&regionCode=CA",
+        "https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&&chart=mostPopular&maxResults=12&regionCode=CA",
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -38,11 +52,13 @@ function Videos() {
 
       const data = await response.json();
 
-      const formattedVideos: VideoType[] = data.items.map((item: any) => ({
+      const formattedVideos: VideoType[] = (
+        data.items as YoutubeVideoData[]
+      ).map((item) => ({
         id: item.id,
         title: item.snippet.title,
         thumbnail: item.snippet.thumbnails.medium.url,
-        views: "Need seperate api call to get views",
+        views: `${Number(item.statistics.viewCount).toLocaleString()} views`,
         category: "N/A",
       }));
 

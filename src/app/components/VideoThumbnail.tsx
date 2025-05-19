@@ -1,6 +1,6 @@
 //Need to create component for holding video cards in columns for main page
 export type VideoType = {
-  id: number;
+  id: string;
   title: string;
   thumbnail: string;
   views: string;

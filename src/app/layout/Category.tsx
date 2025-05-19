@@ -3,10 +3,17 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useRef, useState, useEffect } from "react";
 
+// Defining what type YoutubeCategoryData props will be in order to avoid using "any" when using data thats fetched from API
+type YoutubeCategoryData = {
+  id: string;
+  snippet: {
+    title: string;
+  };
+};
+
 function Category() {
   // Will create useStates to  store categories that will either be placeholders or actual data from user
   const [categories, setCategories] = useState<CategoryTag[]>([]);
-  const [login, setLogin] = useState<boolean>(false);
 
   // useEffect to fetch data once on page load
   useEffect(() => {
@@ -14,7 +21,6 @@ function Category() {
       .then((res) => res.json())
       .then((data) => {
         if (data.accessToken) {
-          setLogin(true);
           fetchCategories(data.accessToken);
         } else {
           setCategories(CategoryPlaceholder);
@@ -36,7 +42,9 @@ function Category() {
 
       const data = await response.json();
 
-      const userCategories: CategoryTag[] = data.items.map((item: any) => ({
+      const userCategories: CategoryTag[] = (
+        data.items as YoutubeCategoryData[]
+      ).map((item) => ({
         id: parseInt(item.id),
         title: item.snippet.title,
       }));
