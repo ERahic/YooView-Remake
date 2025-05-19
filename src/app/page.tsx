@@ -10,9 +10,9 @@ export default function Home() {
       {/*Wrapper for category background width stretch */}
       <div className="relative">
         {/*Code below is to make the width of category component stretch while keeping tags and chevron arrows in middle */}
-        <div className="fixed top-24 left-0 w-full h-14 z-10 bg-blue-950  ml-24"></div>
+        <div className="fixed z-40 top-24 left-0 w-full h-14 z-10 bg-blue-950  ml-24"></div>
 
-        <div className="relative z-20">
+        <div className="relative z-40">
           <Category />
         </div>
       </div>

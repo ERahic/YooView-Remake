@@ -3,6 +3,7 @@
 import VideoThumbnail, { VideoType } from "../components/VideoThumbnail";
 import { useState, useEffect } from "react";
 import { placeholderVideos } from "@/VideoPlaceholders";
+import VideoModal from "../components/VideoModal";
 
 // Defining what type YoutubeVideoData props will be in order to avoid using "any" when using data thats fetched from API
 type YoutubeVideoData = {
@@ -23,6 +24,22 @@ type YoutubeVideoData = {
 function Videos() {
   // will create useState for both videotype and for checking if the user is logged in, fetched video data will only appear when user logs in
   const [videos, setVideos] = useState<VideoType[]>([]);
+
+  // Another useState for video selection and for video window to open and play content
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+  const [showVideo, setShowVideo] = useState<boolean>(false);
+
+  // Function to have video open based on which video was clicked on by user
+  const openVideo = (video: string) => {
+    setSelectedVideo(video);
+    setShowVideo(true);
+  };
+
+  // Function to have video close when user no longer wishes to continue watching, will have "X" on top right corner of video modal to close it
+  const closeVideo = () => {
+    setSelectedVideo(null);
+    setShowVideo(false);
+  };
 
   // useEffect will immediately fetch video data and display when user logs in
   useEffect(() => {
@@ -72,11 +89,21 @@ function Videos() {
   // {...} spread used to display each video held in the placeholder Videos variable
   return (
     <>
-      <div className="ml-20 mt-5 p-4 w-full h-full max-h-200px max-w-300px bg-blue-950 grid grid-cols-4 gap-5">
+      <div className="relative z-10 ml-20 mt-5 p-4 w-full h-full max-h-200px max-w-300px bg-blue-950 grid grid-cols-4 gap-5">
         {videos.map((video) => (
-          <VideoThumbnail key={video.id} video={video} />
+          <div
+            key={video.id}
+            onClick={() => openVideo(video.id)}
+            className="cursor-pointer"
+          >
+            <VideoThumbnail key={video.id} video={video} />
+          </div>
         ))}
       </div>
+      {/*Display video modal when video thumbnail is clicked on*/}
+      {showVideo && selectedVideo && (
+        <VideoModal videoId={selectedVideo} onClose={closeVideo} />
+      )}
     </>
   );
 }
