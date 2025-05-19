@@ -9,6 +9,7 @@ import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import CoffeeIcon from "@mui/icons-material/Coffee";
 import SecurityIcon from "@mui/icons-material/Security";
 import BugReportIcon from "@mui/icons-material/BugReport";
+import { useRouter } from "next/navigation";
 
 // Need to pass menuExpand from header to sidebar as prop in order for menu expansion to work
 type SidebarProps = {
@@ -17,7 +18,7 @@ type SidebarProps = {
 
 // Creating an array of sidebar icons that will include icons that only appear when sidebar is expanded, easier setup then to manually put each icon into its own div
 const sideBarIcons = [
-  { id: 1, icon: HomeIcon, label: "Home", alwaysVisible: true },
+  { id: 1, icon: HomeIcon, label: "Home", alwaysVisible: true, path: "/" },
   { id: 2, icon: TheatersIcon, label: "Clips", alwaysVisible: true },
   { id: 3, icon: AutoAwesomeIcon, label: "Stars", alwaysVisible: true },
   { id: 4, icon: EmojiPeopleIcon, label: "You", alwaysVisible: true },
@@ -32,14 +33,26 @@ const sideBarIcons = [
 function Sidebar({ menuExpand = false }: SidebarProps) {
   console.log("sidebar expanded", menuExpand);
 
+  //Make home button on sidebar redirect user to homepage when clicked
+  const router = useRouter();
+
   // Creating a variable that will map each sidebar option and have the extras appear on condition that menu expanded is true
   const sideBarList = sideBarIcons.map(
-    ({ id, icon: Icon, label, alwaysVisible }) => {
+    ({ id, icon: Icon, label, alwaysVisible, path }) => {
       if (!menuExpand && !alwaysVisible) return null;
+
+      // handleClick variable for icons that hold a path variable and will act if there is
+      const handleClick = () => {
+        if (path) {
+          console.log(`Redirecting to ${path}`);
+          router.push(path);
+        }
+      };
 
       return (
         <div
           key={id}
+          onClick={handleClick}
           className={`flex items-center text-white mt-10 ${
             menuExpand
               ? "flex-row justify-start pl-4 gap-6 text-lg"

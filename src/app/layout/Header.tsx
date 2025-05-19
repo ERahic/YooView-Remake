@@ -10,11 +10,16 @@ import { useState, useEffect } from "react";
 import GoogAuthButton from "../components/Buttons/GoogleAuthButton";
 import Sidebar from "@/app/layout/SideBar";
 import { User } from "@/pages/api/lib/session";
+import { useRouter } from "next/navigation";
+
 // import { signIn } from "next-auth/react"; outdated for this project since Iron-session will be used
 
 // USE OAUTH FOR LOGIN IN THE FUTURE
 // Need to add yooview logo onto left side of header, search bar will be in middle as input, right side will hold notification buttons
 function Header() {
+  // Will make both YooView logo clickable and have user be redirected to home page like on YouTube
+  const router = useRouter();
+
   // UseState for when the menu button is pressed, sidebar will expand and provide more options
   const [menuPressed, setMenuPressed] = useState<boolean>(false);
   const menuExpand = () => {
@@ -40,7 +45,10 @@ function Header() {
           <IconButton onClick={menuExpand}>
             <MenuButton style={{ color: "white" }}></MenuButton>
           </IconButton>
-          <div className="flex flex-shrink-0 ml-4">
+          <div
+            className="flex flex-shrink-0 ml-4 cursor-pointer transition-all duration-100 hover:drop-shadow-[0_0_10px_rgba(255,255,255,1)]"
+            onClick={() => router.push("/")}
+          >
             <Image
               src="/Yooview-logo.png"
               alt="Logo"
