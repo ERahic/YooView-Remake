@@ -2,11 +2,20 @@
 import Header from "@/app/layout/Header";
 import Videos from "@/app/layout/Videos";
 import Category from "@/app/layout/Category";
+import { useState } from "react";
 
 export default function Home() {
+  // Another useState but for search query, when user inputs text inside of search bar and either presses enter or search icon, youtube api should pull videos that are relevant to what user is searching for
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  // Need to make a handleSearch (onSearch) function to send the users search entry into videos so that the youtube api can pull the relevant videos
+  function onSearch(query: string) {
+    setSearchQuery(query);
+  }
+
   return (
     <div className="relative flex flex-col min-h-screen bg-blue-950">
-      <Header />
+      <Header onSearch={onSearch} searchQuery={searchQuery} />
       {/*Wrapper for category background width stretch */}
       <div className="relative">
         {/*Code below is to make the width of category component stretch while keeping tags and chevron arrows in middle */}
@@ -18,7 +27,7 @@ export default function Home() {
       </div>
 
       <div className="flex mt-32">
-        <Videos />
+        <Videos searchQuery={searchQuery} />
       </div>
     </div>
   );

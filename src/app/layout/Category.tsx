@@ -37,10 +37,15 @@ function Category() {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        },
+        }
       );
 
       const data = await response.json();
+      console.log("Fetched Category Data:", data);
+      if (!data.items || !Array.isArray(data.items)) {
+        setCategories(CategoryPlaceholder);
+        return;
+      }
 
       const userCategories: CategoryTag[] = (
         data.items as YoutubeCategoryData[]

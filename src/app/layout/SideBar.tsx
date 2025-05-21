@@ -14,6 +14,8 @@ import { useRouter } from "next/navigation";
 // Need to pass menuExpand from header to sidebar as prop in order for menu expansion to work
 type SidebarProps = {
   menuExpand?: boolean; // putting a question mark will make this more optional
+  onSearch: (query: string) => void;
+  searchQuery: string; // for synching
 };
 
 // Creating an array of sidebar icons that will include icons that only appear when sidebar is expanded, easier setup then to manually put each icon into its own div
@@ -30,7 +32,7 @@ const sideBarIcons = [
   { id: 10, icon: CoffeeIcon, label: "Coffee", alwaysVisible: false },
 ];
 
-function Sidebar({ menuExpand = false }: SidebarProps) {
+function Sidebar({ menuExpand = false, onSearch }: SidebarProps) {
   console.log("sidebar expanded", menuExpand);
 
   //Make home button on sidebar redirect user to homepage when clicked
@@ -43,7 +45,10 @@ function Sidebar({ menuExpand = false }: SidebarProps) {
 
       // handleClick variable for icons that hold a path variable and will act if there is
       const handleClick = () => {
-        if (path) {
+        if (label === "Home") {
+          router.push("/");
+          onSearch(""); // reset the search query and revert to popular videos
+        } else if (typeof path === "string") {
           console.log(`Redirecting to ${path}`);
           router.push(path);
         }
@@ -69,7 +74,7 @@ function Sidebar({ menuExpand = false }: SidebarProps) {
           </span>
         </div>
       );
-    },
+    }
   );
 
   return (

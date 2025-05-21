@@ -14,9 +14,14 @@ import { useRouter } from "next/navigation";
 
 // import { signIn } from "next-auth/react"; outdated for this project since Iron-session will be used
 
+type HeaderProps = {
+  onSearch: (query: string) => void;
+  searchQuery: string;
+};
+
 // USE OAUTH FOR LOGIN IN THE FUTURE
 // Need to add yooview logo onto left side of header, search bar will be in middle as input, right side will hold notification buttons
-function Header() {
+function Header({ onSearch, searchQuery }: HeaderProps) {
   // Will make both YooView logo clickable and have user be redirected to home page like on YouTube
   const router = useRouter();
 
@@ -37,6 +42,7 @@ function Header() {
         setUser(data.user ?? null);
       });
   }, []); // add empty array [] or else useEffect will be constantly active
+
   return (
     <>
       <div className="bg-blue-950 z-50 fixed flex w-full pb-4 top-0 justify-between items-center">
@@ -47,7 +53,10 @@ function Header() {
           </IconButton>
           <div
             className="flex flex-shrink-0 ml-4 cursor-pointer transition-all duration-100 hover:drop-shadow-[0_0_10px_rgba(255,255,255,1)]"
-            onClick={() => router.push("/")}
+            onClick={() => {
+              router.push("/");
+              onSearch("");
+            }}
           >
             <Image
               src="/Yooview-logo.png"
@@ -63,7 +72,7 @@ function Header() {
         <div className="flex items-center gap-6">
           {/*Div below will be for search bar, need to expand and add magnifying glass when clicked on. need microphone button beside search bar*/}
           <div className="absolute left-1/2 transform -translate-x-1/2 mt-6">
-            <SearchBar></SearchBar>
+            <SearchBar onSearch={onSearch} searchQuery={searchQuery} />
           </div>
           <div className="mt-5 mr-50 text-4xl">
             {user && (
@@ -84,7 +93,11 @@ function Header() {
           </div>
         </div>
       </div>
-      <Sidebar menuExpand={menuPressed} />
+      <Sidebar
+        menuExpand={menuPressed}
+        onSearch={onSearch}
+        searchQuery={searchQuery}
+      />
     </>
   );
 }
