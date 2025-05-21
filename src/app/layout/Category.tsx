@@ -37,7 +37,7 @@ function Category() {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        }
+        },
       );
 
       const data = await response.json();

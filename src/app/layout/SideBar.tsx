@@ -69,7 +69,7 @@ function Sidebar({ menuExpand = false }: SidebarProps) {
           </span>
         </div>
       );
-    }
+    },
   );
 
   return (

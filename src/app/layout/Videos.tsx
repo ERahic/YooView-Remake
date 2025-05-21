@@ -18,6 +18,8 @@ type YoutubeVideoData = {
   };
   statistics: {
     viewCount: string;
+    likeCount: string;
+    commentCount: string;
   };
 };
 
@@ -64,7 +66,7 @@ function Videos() {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        }
+        },
       );
 
       const data = await response.json();
@@ -75,7 +77,11 @@ function Videos() {
         id: item.id,
         title: item.snippet.title,
         thumbnail: item.snippet.thumbnails.medium.url,
-        views: `${Number(item.statistics.viewCount).toLocaleString()} views`,
+        views: `${Number(item.statistics.viewCount).toLocaleString()} Views`,
+        likes: `${Number(item.statistics.likeCount).toLocaleString()} Likes`,
+        comments: item.statistics.commentCount
+          ? `${Number(item.statistics.commentCount).toLocaleString()} Comments`
+          : "Comments Disabled",
         category: "N/A",
       }));
 

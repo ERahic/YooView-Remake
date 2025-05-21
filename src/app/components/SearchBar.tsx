@@ -31,7 +31,7 @@ function SearchBar() {
                   !searchClicked,
                 "outline-none border-1 border-green-800 rounded-full w-175 text-start pl-12":
                   searchClicked,
-              }
+              },
             )}
             onFocus={() => setSearchClicked(true)}
             onBlur={() => setSearchClicked(false)}

@@ -6,7 +6,7 @@ import { SessionData } from "@/pages/api/lib/session";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   // Getting the session via iron-session
   const session = await getIronSession<SessionData>(req, res, sessionOptions);

@@ -7,7 +7,7 @@ import type { SessionData } from "@/pages/api/lib/session";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const { code: authorizationCode } = req.query; // This will be the authorization code that google provides user
 
@@ -32,7 +32,7 @@ export default async function handler(
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-      }
+      },
     );
     // define the access_token variable by extracting data from tokenResponse
     const { access_token } = tokenResponse.data;
@@ -44,7 +44,7 @@ export default async function handler(
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     // Will use getIronSession to get the session object
     const user = userInfoRes.data;

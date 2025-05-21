@@ -48,7 +48,7 @@ export const sessionOptions: SessionOptions = {
 // This will check if the user is logged in, they will have the accessToken, null if not logged in
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const session = await getIronSession<SessionData>(req, res, sessionOptions);
   res.status(200).json({

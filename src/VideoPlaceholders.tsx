@@ -6,6 +6,8 @@ export const placeholderVideos = [
     thumbnail: "https://picsum.photos/id/1/200/300",
     views: "1,465,832 Views",
     category: "Test",
+    likes: "12k Likes",
+    comments: "8k Comments",
   },
   {
     id: "placeholder-2",
@@ -13,6 +15,8 @@ export const placeholderVideos = [
     thumbnail: "https://picsum.photos/id/3/200/300",
     views: "14,465,832 Views",
     category: "Test",
+    likes: "12k Likes",
+    comments: "8k Comments",
   },
   {
     id: "placeholder-3",
@@ -20,6 +24,8 @@ export const placeholderVideos = [
     thumbnail: "https://picsum.photos/id/29/200/300",
     views: "12,465,832 Views",
     category: "Test",
+    likes: "12k Likes",
+    comments: "8k Comments",
   },
   {
     id: "placeholder-4",
@@ -27,6 +33,8 @@ export const placeholderVideos = [
     thumbnail: "https://picsum.photos/id/43/200/300",
     views: "111,465,832 Views",
     category: "Test",
+    likes: "12k Likes",
+    comments: "8k Comments",
   },
   {
     id: "placeholder-5",
@@ -34,6 +42,8 @@ export const placeholderVideos = [
     thumbnail: "https://picsum.photos/id/55/200/300",
     views: "30,465,832 Views",
     category: "Test",
+    likes: "12k Likes",
+    comments: "8k Comments",
   },
   {
     id: "placeholder-6",
@@ -41,6 +51,8 @@ export const placeholderVideos = [
     thumbnail: "https://picsum.photos/id/64/200/300",
     views: "100,465,832 Views",
     category: "Test",
+    likes: "12k Likes",
+    comments: "8k Comments",
   },
   {
     id: "placeholder-7",
@@ -48,6 +60,8 @@ export const placeholderVideos = [
     thumbnail: "https://picsum.photos/id/84/200/300",
     views: "23,465,832 Views",
     category: "Test",
+    likes: "12k Likes",
+    comments: "8k Comments",
   },
   {
     id: "placeholder-8",
@@ -55,6 +69,8 @@ export const placeholderVideos = [
     thumbnail: "https://picsum.photos/id/122/200/300",
     views: "6,465,832 Views",
     category: "Test",
+    likes: "12k Likes",
+    comments: "8k Comments",
   },
   {
     id: "placeholder-9",
@@ -62,6 +78,8 @@ export const placeholderVideos = [
     thumbnail: "https://picsum.photos/id/124/200/300",
     views: "65,465,832 Views",
     category: "Test",
+    likes: "12k Likes",
+    comments: "8k Comments",
   },
   {
     id: "placeholder-10",
@@ -69,6 +87,8 @@ export const placeholderVideos = [
     thumbnail: "https://picsum.photos/id/142/200/300",
     views: "80,465,832 Views",
     category: "Test",
+    likes: "12k Likes",
+    comments: "8k Comments",
   },
   {
     id: "placeholder-11",
@@ -76,6 +96,8 @@ export const placeholderVideos = [
     thumbnail: "https://picsum.photos/id/158/200/300",
     views: "90,465,832 Views",
     category: "Test",
+    likes: "12k Likes",
+    comments: "8k Comments",
   },
   {
     id: "placeholder-12",
@@ -83,5 +105,7 @@ export const placeholderVideos = [
     thumbnail: "https://picsum.photos/id/145/200/300",
     views: "465,832 Views",
     category: "Test",
+    likes: "12k Likes",
+    comments: "8k Comments",
   },
 ];
