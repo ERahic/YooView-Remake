@@ -9,6 +9,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  // Fallbacks to have it work for both localhost and vercel
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL ||
+    (process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000");
+  const redirectUri = `${baseUrl}/api/auth/callback`;
   const { code: authorizationCode } = req.query; // This will be the authorization code that google provides user
 
   // Will throw in error in case the authorizationCode is not a string for type efficiency
@@ -24,7 +31,7 @@ export default async function handler(
         code: authorizationCode,
         client_id: process.env.GOOGLE_CLIENT_ID!,
         client_secret: process.env.GOOGLE_CLIENT_SECRET!,
-        redirect_uri: process.env.GOOGLE_REDIRECT_URI!,
+        redirect_uri: redirectUri,
         grant_type: "authorization_code",
       }),
       // Headers was added to make absolute sure that Google will accept the requested format
@@ -62,6 +69,9 @@ export default async function handler(
     res.redirect("/");
   } catch (error) {
     console.error("OAUTH Error", error);
+    if (axios.isAxiosError(error)) {
+      console.error("Google token response error:", error.response?.data); // will explain exactly why google is rejecting the token exchange
+    }
     res.status(500).json({ error: "Failed to exchange code for token" });
   }
 }
