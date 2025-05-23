@@ -2,6 +2,7 @@ import * as React from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import TheatersIcon from "@mui/icons-material/Theaters";
+import SatelliteAltIcon from "@mui/icons-material/SatelliteAlt";
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -22,14 +23,15 @@ type SidebarProps = {
 const sideBarIcons = [
   { id: 1, icon: HomeIcon, label: "Home", alwaysVisible: true, path: "/" },
   { id: 2, icon: TheatersIcon, label: "Clips", alwaysVisible: true },
-  { id: 3, icon: AutoAwesomeIcon, label: "Stars", alwaysVisible: true },
-  { id: 4, icon: EmojiPeopleIcon, label: "You", alwaysVisible: true },
-  { id: 5, icon: FingerprintIcon, label: "Posts", alwaysVisible: false },
-  { id: 6, icon: SettingsIcon, label: "Settings", alwaysVisible: false },
-  { id: 7, icon: PhotoCameraIcon, label: "Upload", alwaysVisible: false },
-  { id: 8, icon: SecurityIcon, label: "Rules & Safety", alwaysVisible: false },
-  { id: 9, icon: BugReportIcon, label: "Report Bugs", alwaysVisible: false },
-  { id: 10, icon: CoffeeIcon, label: "Coffee", alwaysVisible: false },
+  { id: 3, icon: SatelliteAltIcon, label: "Explore", alwaysVisible: true },
+  { id: 4, icon: AutoAwesomeIcon, label: "Stars", alwaysVisible: true },
+  { id: 5, icon: EmojiPeopleIcon, label: "You", alwaysVisible: true },
+  { id: 6, icon: FingerprintIcon, label: "Posts", alwaysVisible: false },
+  { id: 7, icon: SettingsIcon, label: "Settings", alwaysVisible: false },
+  { id: 8, icon: PhotoCameraIcon, label: "Upload", alwaysVisible: false },
+  { id: 9, icon: SecurityIcon, label: "Rules & Safety", alwaysVisible: false },
+  { id: 10, icon: BugReportIcon, label: "Report Bugs", alwaysVisible: false },
+  { id: 11, icon: CoffeeIcon, label: "Coffee", alwaysVisible: false },
 ];
 
 function Sidebar({ menuExpand = false, onSearch }: SidebarProps) {
