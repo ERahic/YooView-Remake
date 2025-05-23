@@ -20,13 +20,13 @@ export default function GoogAuthButton({
   useEffect(() => {
     fetch("/api/lib/session").then(
       (
-        res, // Parses the json body from the response in order to access the accessToken
+        res // Parses the json body from the response in order to access the accessToken
       ) =>
         res.json().then((data) => {
           setLoggedIn(!!data.accessToken); // "!!" is used to convert a value into a true boolean
           setUser(data.user ?? null);
           console.log("User Picture URL:", data.user?.picture);
-        }),
+        })
     );
   }, []);
 

@@ -20,7 +20,7 @@ export interface SessionData {
 }
 
 // Need to include a what if statement outlining that if there is no SESSION_PASSWORD, then an error will be thrown, this will fix sessionOptions from throwing errors for variables such as password since string | undefined cannot be assignable to "password"
-if (!process.env.SESSION_SECRET) {
+if (!process.env.IRON_SESSION_PASSWORD) {
   throw new Error(`Warning! Missing SESSION_PASSWORD in env variables!!!`);
 }
 
@@ -39,7 +39,7 @@ declare module "iron-session" {
 // Will need to create a variable called sessionOptions to define what options will be available for sessionOptions
 export const sessionOptions: SessionOptions = {
   cookieName: "Yooview_user_cookie",
-  password: process.env.SESSION_SECRET!, // Added "!" for sessionOptions to avoid typescript giving an error
+  password: process.env.IRON_SESSION_PASSWORD! as string, // Added "!" for sessionOptions to avoid typescript giving an error
   cookieOptions: {
     secure: process.env.NODE_ENV === "production", // The cookie will be sent over to HTTPS only for security reasons
   },
@@ -48,7 +48,7 @@ export const sessionOptions: SessionOptions = {
 // This will check if the user is logged in, they will have the accessToken, null if not logged in
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) {
   const session = await getIronSession<SessionData>(req, res, sessionOptions);
   res.status(200).json({

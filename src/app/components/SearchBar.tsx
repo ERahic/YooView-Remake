@@ -1,8 +1,9 @@
 // need to handle state for when user clicks on search bar
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import MicIcon from "@mui/icons-material/Mic";
+import CloseIcon from "@mui/icons-material/Close";
 import clsx from "clsx";
 
 // by default, the search bar is not focused on until clicked on
@@ -17,8 +18,15 @@ function SearchBar({ onSearch, searchQuery }: SearchBarProps) {
   // useState for when the searchbar itself is clicked on by the user to have transition and blur effects work
   const [searchClicked, setSearchClicked] = useState<boolean>(false);
 
+  // Creating a ref to have onBlur work for search bar when user enters a string and presses "Enter" key or search icon, inputRef will be assigned to <input>
+  const inputRef = useRef<HTMLInputElement>(null);
+
   // Another useState but for tracking what user has entered in search and youtube api will fetch videos related to searched input
   const [searchEntered, setSearchEntered] = useState<string>("");
+
+  //useState to track the index of the currently selected suggestion in the dropbox
+  const [highlightSuggestionIndex, setHighlightSuggestionIndex] =
+    useState<number>(-1);
 
   // useState to track users input and offer suggestions in a drop box like how any website with a search bar would provide. Will need to be an array since it will hold multiple suggestions for user
   const [suggestedString, setSuggestedString] = useState<string[]>([]);
@@ -29,6 +37,11 @@ function SearchBar({ onSearch, searchQuery }: SearchBarProps) {
   useEffect(() => {
     setSearchEntered(searchQuery);
   }, [searchQuery]);
+
+  // useEffect to reset the index of highlighted suggestion when the suggestions change
+  useEffect(() => {
+    setHighlightSuggestionIndex(-1);
+  }, [suggestedString]);
 
   // useEffect for when the user inputs anything in text and the suggestions will trigger everytime a new string is added or removed
   useEffect(() => {
@@ -89,6 +102,7 @@ function SearchBar({ onSearch, searchQuery }: SearchBarProps) {
           )}
           {/*In order to have useStates for searched & setSearched, need to use onChange and onKeyDown for when user types anything in searchbar and will get automatically updated*/}
           <input
+            ref={inputRef}
             type="text"
             placeholder="Search!"
             value={searchEntered}
@@ -111,19 +125,54 @@ function SearchBar({ onSearch, searchQuery }: SearchBarProps) {
             }}
             onChange={(e) => setSearchEntered(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === `Enter`) {
-                onSearch(searchEntered);
+              if (e.key === "ArrowDown") {
+                e.preventDefault();
+                setHighlightSuggestionIndex((prev) =>
+                  Math.min(prev + 1, suggestedString.length - 1)
+                );
+              } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                setHighlightSuggestionIndex((prev) => Math.max(prev - 1, -1));
+              } else if (e.key === `Enter`) {
+                if (highlightSuggestionIndex >= 0) {
+                  const selected = suggestedString[highlightSuggestionIndex];
+                  setSearchEntered(selected);
+                  onSearch(selected);
+                } else {
+                  onSearch(searchEntered);
+                }
+
+                setSearchClicked(false);
+                setShowSuggestedString(false);
+                inputRef.current?.blur(); // Will remove the focus when "Enter" key is pressed
                 console.log(`Entered: ${searchEntered}`);
               }
             }}
           />
+          {searchEntered && (
+            <button
+              type="button"
+              onMouseDown={(e) => {
+                e.preventDefault(); // prevents the default blur from occuring when closing icon is clicked rather than outside of the search bar
+                setSearchEntered("");
+              }}
+              className="absolute right-3 top-2 text-red-500"
+            >
+              <CloseIcon />
+            </button>
+          )}
           {/*Here will have the suggestions be shown to the user once they start typing anything in the search bar*/}
           {showSuggestedString && suggestedString.length > 0 && (
             <div className="absolute top-full z-[999] mt-2 w-full bg-gray-700 border border-blue-950 rounded-md shadow-md text-white">
               {suggestedString.map((string, index) => (
                 <div
                   key={index}
-                  className="p-2 hover:bg-gray-600 cursor-pointer"
+                  className={clsx(
+                    "p-2 cursor-pointer",
+                    highlightSuggestionIndex === index
+                      ? "bg-blue-600 text white"
+                      : "hover:bg-gray-600"
+                  )}
                   onMouseDown={() => {
                     setSearchEntered(string);
                     onSearch(string); // This will perform the search ASAP
@@ -137,7 +186,15 @@ function SearchBar({ onSearch, searchQuery }: SearchBarProps) {
           )}
         </div>
         <div className="border-1 border-blue-950 rounded-full">
-          <IconButton>
+          <IconButton
+            onMouseDown={(e) => {
+              e.preventDefault();
+              onSearch(searchEntered);
+              setSearchClicked(false);
+              setShowSuggestedString(false);
+              inputRef.current?.blur();
+            }}
+          >
             <SearchIcon style={{ color: "white" }}></SearchIcon>
           </IconButton>
         </div>
