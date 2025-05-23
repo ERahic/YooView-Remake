@@ -138,7 +138,7 @@ function Category() {
   return (
     <>
       <div className="fixed top-24 left-20 right-0 z-20 caret-transparent">
-        <div className="relative mx-auto w-full max-w-[750px] px-4 bg-blue-950 rounded-lg overflow-visible flex items-center">
+        <div className="relative mx-auto w-full max-w-[750px] px-4 bg-gray-800 rounded-lg overflow-visible flex items-center">
           {/* Left Chevron */}
           <div
             onClick={handleScrollLeft}
@@ -157,11 +157,11 @@ function Category() {
 
           {/* Left Fade */}
           {leftArrowShow && (
-            <div className="pointer-events-none absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-blue-950/80 to-transparent z-20" />
+            <div className="pointer-events-none absolute left-0 top-0 h-full w-32 z-20" />
           )}
           {/* Right Fade */}
           {rightArrowShow && (
-            <div className="pointer-events-none absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-blue-950/80 to-transparent z-20" />
+            <div className="pointer-events-none absolute right-0 top-0 h-full w-32 z-20" />
           )}
 
           {/* Scrollable Tags */}
@@ -174,7 +174,7 @@ function Category() {
               {categories.map((tag) => (
                 <div
                   key={tag.id}
-                  className="border select-none border-gray-700 p-2 bg-gray-700 hover:bg-gray-500 px-6 rounded-full min-w-fit"
+                  className="border select-none border-blue-500 p-2 bg-gray-800 hover:bg-gray-500 px-6 rounded-full min-w-fit"
                 >
                   {tag.title}
                 </div>

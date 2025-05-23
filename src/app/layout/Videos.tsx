@@ -90,6 +90,12 @@ function Videos({ searchQuery }: { searchQuery: string }) {
       );
 
       const data = await response.json();
+      // Safe check if data was received
+      if (!data.items || !Array.isArray(data.items)) {
+        console.warn("No Video Items Have Returned!", data);
+        setVideos(placeholderVideos);
+        return;
+      }
 
       const formattedVideos: VideoType[] = (
         data.items as YoutubeVideoData[]
@@ -204,7 +210,7 @@ function Videos({ searchQuery }: { searchQuery: string }) {
   // {...} spread used to display each video held in the placeholder Videos variable
   return (
     <>
-      <div className="relative z-10 ml-20 mt-5 p-4 w-full h-full max-h-200px max-w-300px bg-blue-950 grid grid-cols-4 gap-5">
+      <div className="relative z-10 ml-20 mt-5 p-4 w-full h-full max-h-200px max-w-300px bg-gray-800 grid grid-cols-4 gap-5">
         {videos.map((video) => (
           <div
             key={video.id}

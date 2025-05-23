@@ -45,14 +45,14 @@ function Header({ onSearch, searchQuery }: HeaderProps) {
 
   return (
     <>
-      <div className="bg-blue-950 z-50 fixed flex w-full pb-4 top-0 justify-between items-center">
+      <div className="bg-gray-800 z-50 fixed flex w-full pb-4 top-0 justify-between items-center">
         {/*Div below will be for logo and menu button*/}
         <div className="flex mt-5 ml-6 items-center">
           <IconButton onClick={menuExpand}>
             <MenuButton style={{ color: "white" }}></MenuButton>
           </IconButton>
           <div
-            className="flex flex-shrink-0 ml-4 cursor-pointer transition-all duration-100 hover:drop-shadow-[0_0_10px_rgba(255,255,255,1)]"
+            className="flex flex-shrink-0 ml-4 cursor-pointer transition-all duration-100 hover:drop-shadow-[0_0_10px_rgba(0,100,150,1)]"
             onClick={() => {
               router.push("/");
               onSearch("");
