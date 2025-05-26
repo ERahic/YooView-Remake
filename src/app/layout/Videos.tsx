@@ -1,7 +1,7 @@
 //This is where the videos will be palced and take up most of the screen
 //VideoThumbnail component will be imported to help display video cards onto this component
 import VideoThumbnail, { VideoType } from "../components/VideoThumbnail";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { placeholderVideos } from "@/VideoPlaceholders";
 import VideoModal from "../components/VideoModal";
 
@@ -51,6 +51,9 @@ function Videos({ searchQuery }: { searchQuery: string }) {
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
   const [showVideo, setShowVideo] = useState<boolean>(false);
 
+  // UseState to track pagination (process of splitting large sets of data into smaller ones for easier load management)
+  const [nextPageToken, setNextPageToken] = useState<string | null>(null);
+
   // Function to have video open based on which video was clicked on by user
   const openVideo = (video: string) => {
     setSelectedVideo(video);
@@ -76,6 +79,76 @@ function Videos({ searchQuery }: { searchQuery: string }) {
         }
       });
   }, []);
+
+  // Need a useRef to track the scroll position of page to load more videos while logged in
+  const loadMoreVideosRef = useRef<HTMLDivElement | null>(null);
+
+  // useState to throttle page tracking
+  const [loadingMoreVideos, setLoadingMoreVideos] = useState(false);
+
+  // Function for fetching more videos when the user is logged in and scrolls at the bottom of page
+  const fetchMoreVideos = useCallback(async () => {
+    // useCallback will ensure the function reference changes only when nextPageToken changes
+    console.log("Fetchvideos called ()");
+
+    if (loadingMoreVideos || !nextPageToken) return;
+
+    setLoadingMoreVideos(true);
+    console.log("Fetching More Videos...");
+
+    const sessionResponse = await fetch("/api/lib/session");
+    const { accessToken } = await sessionResponse.json();
+    if (!accessToken) return;
+
+    const YoutubeResponse = await fetch(
+      `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&chart=mostPopular&regionCode=CA&maxResults=12&pageToken=${nextPageToken}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const YoutubeData = await YoutubeResponse.json();
+
+    const moreVideos: VideoType[] = (
+      YoutubeData.items as YoutubeVideoData[]
+    ).map((item) => ({
+      id: item.id,
+      title: item.snippet.title,
+      thumbnail: item.snippet.thumbnails.medium.url,
+      views: `${Number(item.statistics.viewCount).toLocaleString()} Views`,
+      likes: `${Number(item.statistics.likeCount).toLocaleString()} Likes`,
+      comments: item.statistics.commentCount
+        ? `${Number(item.statistics.commentCount).toLocaleString()} Comments`
+        : "Comments Disabled",
+      category: "N/A",
+    }));
+    console.log("Current video count:", videos.length);
+    console.log("New batch:", moreVideos.length);
+
+    setVideos((prev) => [...prev, ...moreVideos]);
+    setNextPageToken(YoutubeData.nextPageToken ?? null);
+    setLoadingMoreVideos(false);
+  }, [loadingMoreVideos, nextPageToken, videos.length]);
+
+  // UseEffect to listen for the user scrolling at the bottom of the page when logged in
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        // we observe the loadMoreRef div and entries[0].isIntersecting becomes true when the page reaches the bottom and observes the div with loadMoreRef assigned to it
+        console.log("Intersection Triggered");
+        fetchMoreVideos();
+      }
+    });
+    const target = loadMoreVideosRef.current;
+    if (target) observer.observe(target);
+
+    return () => {
+      if (target) observer.unobserve(target);
+      observer.disconnect();
+    };
+  }, [fetchMoreVideos]);
 
   // Will fetch data for popular youtube videos on first render after login
   const fetchYoutubePopularVideos = async (accessToken: string) => {
@@ -112,6 +185,7 @@ function Videos({ searchQuery }: { searchQuery: string }) {
       }));
 
       setVideos(formattedVideos);
+      setNextPageToken(data.nextPageToken ?? null);
     } catch (error) {
       console.error("Failed to fetch Youtube data!", error);
       setVideos(placeholderVideos);
@@ -210,16 +284,22 @@ function Videos({ searchQuery }: { searchQuery: string }) {
   // {...} spread used to display each video held in the placeholder Videos variable
   return (
     <>
-      <div className="relative z-10 ml-20 mt-5 p-4 w-full h-full max-h-200px max-w-300px bg-gray-800 grid grid-cols-4 gap-5">
-        {videos.map((video) => (
-          <div
-            key={video.id}
-            onClick={() => openVideo(video.id)}
-            className="cursor-pointer"
-          >
-            <VideoThumbnail video={video} />
-          </div>
-        ))}
+      <div className="relative z-10 ml-20 mt-5 p-4 w-full h-full max-h-200px max-w-300px bg-gray-800">
+        <div className="grid grid-cols-4 gap-5">
+          {videos.map((video) => (
+            <div
+              key={video.id}
+              onClick={() => openVideo(video.id)}
+              className="cursor-pointer"
+            >
+              <VideoThumbnail video={video} />
+            </div>
+          ))}
+        </div>
+        <div
+          ref={loadMoreVideosRef}
+          className="flex flex-col h-20 w-full border border-red-500 mt-10"
+        />
       </div>
       {/*Display video modal when video thumbnail is clicked on*/}
       {showVideo && selectedVideo && (
