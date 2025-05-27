@@ -92,7 +92,6 @@ function Videos({ searchQuery }: { searchQuery: string }) {
     console.log("Fetchvideos called ()");
 
     if (loadingMoreVideos || !nextPageToken) return;
-
     setLoadingMoreVideos(true);
     console.log("Fetching More Videos...");
 
@@ -100,37 +99,90 @@ function Videos({ searchQuery }: { searchQuery: string }) {
     const { accessToken } = await sessionResponse.json();
     if (!accessToken) return;
 
-    const YoutubeResponse = await fetch(
-      `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&chart=mostPopular&regionCode=CA&maxResults=12&pageToken=${nextPageToken}`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    let newVideos: VideoType[] = [];
 
-    const YoutubeData = await YoutubeResponse.json();
+    if (searchQuery.trim()) {
+      // continue with fetching SEARCHED results
+      const QueryResponse = await fetch(
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=12&regionCode-CA&q=${encodeURIComponent(
+          searchQuery
+        )}&pageToken=${nextPageToken}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
 
-    const moreVideos: VideoType[] = (
-      YoutubeData.items as YoutubeVideoData[]
-    ).map((item) => ({
-      id: item.id,
-      title: item.snippet.title,
-      thumbnail: item.snippet.thumbnails.medium.url,
-      views: `${Number(item.statistics.viewCount).toLocaleString()} Views`,
-      likes: `${Number(item.statistics.likeCount).toLocaleString()} Likes`,
-      comments: item.statistics.commentCount
-        ? `${Number(item.statistics.commentCount).toLocaleString()} Comments`
-        : "Comments Disabled",
-      category: "N/A",
-    }));
-    console.log("Current video count:", videos.length);
-    console.log("New batch:", moreVideos.length);
+      const searchData = await QueryResponse.json();
+      const videoId = searchData.items
+        .map((item: YouTubeSearch) => item.id.videoId)
+        .join(",");
 
-    setVideos((prev) => [...prev, ...moreVideos]);
-    setNextPageToken(YoutubeData.nextPageToken ?? null);
-    setLoadingMoreVideos(false);
-  }, [loadingMoreVideos, nextPageToken, videos.length]);
+      const detailedRes = await fetch(
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${videoId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const detailedData = await detailedRes.json();
+
+      newVideos = (detailedData.items as YoutubeVideoData[]).map((item) => ({
+        id: item.id,
+        title: item.snippet.title,
+        thumbnail: item.snippet.thumbnails.medium.url,
+        views: `${Number(item.statistics.viewCount).toLocaleString()} Views`,
+        likes: `${Number(item.statistics.likeCount).toLocaleString()} Likes`,
+        comments: item.statistics.commentCount
+          ? `${Number(item.statistics.commentCount).toLocaleString()} Comments`
+          : "Comments Disabled",
+        category: "N/A",
+      }));
+      setNextPageToken(searchData.nextPageToken ?? null);
+      setVideos((prev) => {
+        const existingId = new Set(prev.map((video) => video.id));
+        const uniqueVideos = newVideos.filter(
+          (video) => !existingId.has(video.id)
+        );
+        return [...prev, ...uniqueVideos];
+      });
+      setLoadingMoreVideos(false);
+    } else {
+      // If scrolling down page to load more videos without a searchquery entered in the searchbar, pull popular videos instead
+      const YoutubeResponse = await fetch(
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&chart=mostPopular&regionCode=CA&maxResults=12&pageToken=${nextPageToken}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      const YoutubeData = await YoutubeResponse.json();
+
+      const moreVideos: VideoType[] = (
+        YoutubeData.items as YoutubeVideoData[]
+      ).map((item) => ({
+        id: item.id,
+        title: item.snippet.title,
+        thumbnail: item.snippet.thumbnails.medium.url,
+        views: `${Number(item.statistics.viewCount).toLocaleString()} Views`,
+        likes: `${Number(item.statistics.likeCount).toLocaleString()} Likes`,
+        comments: item.statistics.commentCount
+          ? `${Number(item.statistics.commentCount).toLocaleString()} Comments`
+          : "Comments Disabled",
+        category: "N/A",
+      }));
+      console.log("Current video count:", videos.length);
+      console.log("New batch:", moreVideos.length);
+
+      setVideos((prev) => [...prev, ...moreVideos]);
+      setNextPageToken(YoutubeData.nextPageToken ?? null);
+      setLoadingMoreVideos(false);
+    }
+  }, [loadingMoreVideos, nextPageToken, videos.length, searchQuery]);
 
   // UseEffect to listen for the user scrolling at the bottom of the page when logged in
   useEffect(() => {
@@ -298,7 +350,7 @@ function Videos({ searchQuery }: { searchQuery: string }) {
         </div>
         <div
           ref={loadMoreVideosRef}
-          className="flex flex-col h-20 w-full border border-red-500 mt-10"
+          className="flex flex-col h-20 w-full mt-10"
         />
       </div>
       {/*Display video modal when video thumbnail is clicked on*/}
