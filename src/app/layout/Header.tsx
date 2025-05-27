@@ -59,7 +59,7 @@ function Header({ onSearch, searchQuery }: HeaderProps) {
             }}
           >
             <Image
-              src="/Yooview-logo.png"
+              src="/Yooview-logo-dark.png"
               alt="Logo"
               width={300}
               height={300}
