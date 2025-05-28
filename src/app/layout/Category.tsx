@@ -42,7 +42,15 @@ function Category() {
 
       const data = await response.json();
       console.log("Fetched Category Data:", data);
+
+      if (data.error) {
+        console.error("YouTube API Error:", data.error);
+        setCategories(CategoryPlaceholder);
+        return;
+      }
+
       if (!data.items || !Array.isArray(data.items)) {
+        console.warn("No category items were fetched");
         setCategories(CategoryPlaceholder);
         return;
       }

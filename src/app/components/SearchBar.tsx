@@ -1,5 +1,6 @@
 // need to handle state for when user clicks on search bar
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import MicIcon from "@mui/icons-material/Mic";
@@ -90,6 +91,14 @@ function SearchBar({ onSearch, searchQuery }: SearchBarProps) {
     console.log("suggested string updated", suggestedString);
   }, [searchEntered, suggestedString]);
 
+  // new handleSearch to have user be redirected to new page returning videos that the user was searching for
+  const router = useRouter();
+  const SearchPageHandle = () => {
+    if (searchEntered.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchEntered)}`);
+    }
+  };
+
   // use clsx and useState to make search bar expand a bit when clicked on,
   return (
     <>
@@ -134,18 +143,16 @@ function SearchBar({ onSearch, searchQuery }: SearchBarProps) {
                 e.preventDefault();
                 setHighlightSuggestionIndex((prev) => Math.max(prev - 1, -1));
               } else if (e.key === `Enter`) {
-                if (highlightSuggestionIndex >= 0) {
-                  const selected = suggestedString[highlightSuggestionIndex];
-                  setSearchEntered(selected);
-                  onSearch(selected);
-                } else {
-                  onSearch(searchEntered);
-                }
-
+                e.preventDefault();
+                const query =
+                  highlightSuggestionIndex >= 0
+                    ? suggestedString[highlightSuggestionIndex]
+                    : searchEntered;
+                router.push(`/search?q=${encodeURIComponent(query)}`);
                 setSearchClicked(false);
                 setShowSuggestedString(false);
                 inputRef.current?.blur(); // Will remove the focus when "Enter" key is pressed
-                console.log(`Entered: ${searchEntered}`);
+                console.log(`Entered: ${query}`);
               }
             }}
           />
@@ -177,6 +184,7 @@ function SearchBar({ onSearch, searchQuery }: SearchBarProps) {
                     setSearchEntered(string);
                     onSearch(string); // This will perform the search ASAP
                     setShowSuggestedString(false);
+                    SearchPageHandle();
                   }}
                 >
                   {string}
@@ -189,10 +197,12 @@ function SearchBar({ onSearch, searchQuery }: SearchBarProps) {
           <IconButton
             onMouseDown={(e) => {
               e.preventDefault();
-              onSearch(searchEntered);
-              setSearchClicked(false);
-              setShowSuggestedString(false);
-              inputRef.current?.blur();
+              if (searchEntered.trim()) {
+                router.push(`/search?q=${encodeURIComponent(searchEntered)}`);
+                setSearchClicked(false);
+                setShowSuggestedString(false);
+                inputRef.current?.blur();
+              }
             }}
           >
             <SearchIcon style={{ color: "white" }}></SearchIcon>

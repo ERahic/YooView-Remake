@@ -41,8 +41,8 @@ export default async function handler(
         },
       }
     );
-    // define the access_token variable by extracting data from tokenResponse
-    const { access_token } = tokenResponse.data;
+    // define the access_token variable by extracting data from tokenResponse. Also refreshToken and expiration to fix google 403 error when redirecting page back
+    const { access_token, refresh_token, expires_in } = tokenResponse.data;
 
     // The access will now let us get the users profile
     const userInfoRes = await axios.get(
@@ -57,6 +57,8 @@ export default async function handler(
     const user = userInfoRes.data;
     const session = await getIronSession<SessionData>(req, res, sessionOptions);
     session.accessToken = access_token;
+    session.refreshToken = refresh_token;
+    session.expiresAt = Date.now() + expires_in * 1000;
     session.user = {
       name: user.name,
       email: user.email,

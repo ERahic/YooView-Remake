@@ -34,3 +34,8 @@ export default function RootLayout({
     </html>
   );
 }
+
+// Create scoped layout for searching new videos. Will create a new page
+export function SearchLayout({ children }: { children: React.ReactNode }) {
+  return <section>{children}</section>;
+}

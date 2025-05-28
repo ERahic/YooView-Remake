@@ -2,6 +2,7 @@
 import { SessionOptions } from "iron-session";
 import { getIronSession } from "iron-session";
 import { NextApiRequest, NextApiResponse } from "next";
+import { refreshAccessToken } from "@/lib/refreshAccessToken";
 
 // Will have to extend the type of our session just like how it was done in NEXTAUTH in order for session.ts to recognize that iron-session will have an accessToken
 // will use interface rather than type due to declaration merging being supported instead of type. Whenever typescript seeing a lot of interface declarations, it will combined them all into one
@@ -16,6 +17,8 @@ export interface User {
 // Need to extend the interface of SessionData to accept accessTokens as strings
 export interface SessionData {
   accessToken?: string;
+  refreshToken?: string;
+  expiresAt?: number;
   user?: User;
 }
 
@@ -28,6 +31,8 @@ if (!process.env.IRON_SESSION_PASSWORD) {
 declare module "iron-session" {
   interface IronSessionData extends SessionData {
     accessToken?: string;
+    refreshToken?: string;
+    expiresAt?: number;
     user: {
       name: string;
       email: string;
@@ -47,13 +52,39 @@ export const sessionOptions: SessionOptions = {
 
 // This will check if the user is logged in, they will have the accessToken, null if not logged in
 export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
+  request: NextApiRequest,
+  response: NextApiResponse
 ) {
-  const session = await getIronSession<SessionData>(req, res, sessionOptions);
-  res.status(200).json({
-    accessToken: session.accessToken ?? null,
-    user: session.user ?? null,
+  const session = await getIronSession<SessionData>(
+    request,
+    response,
+    sessionOptions
+  );
+
+  const isExpired =
+    session.expiresAt !== undefined && Date.now() > session.expiresAt;
+
+  // Check if the accessToken is either missing or has expired
+  if (session.refreshToken && (!session.accessToken || isExpired)) {
+    console.log("Access Token is missing or expired, attempting refresh");
+
+    const newToken = await refreshAccessToken(session.refreshToken!);
+
+    if (newToken && newToken.access_token) {
+      session.accessToken = newToken.access_token;
+      session.expiresAt = Date.now() + newToken.expires_in * 1000;
+      await session.save();
+    } else {
+      console.warn("Failed to fetch accessToken");
+      session.accessToken = undefined;
+      session.expiresAt = undefined;
+      await session.save();
+    }
+  }
+  response.status(200).json({
+    accessToken: session.accessToken || null,
+    user: session.user || null,
   });
-  // pass the session data (name, email, avatar, etc) for front end
 }
+
+// pass the session data (name, email, avatar, etc) for front end

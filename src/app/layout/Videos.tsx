@@ -47,6 +47,13 @@ function Videos({ searchQuery }: { searchQuery: string }) {
   // will create useState for both videotype and for checking if the user is logged in, fetched video data will only appear when user logs in
   const [videos, setVideos] = useState<VideoType[]>([]);
 
+  // a ref to hold the length of videos that will be fetched and displayed
+  const lastestVideoCountRef = useRef<number>(0);
+
+  useEffect(() => {
+    lastestVideoCountRef.current = videos.length;
+  }, [videos]);
+
   // Another useState for video selection and for video window to open and play content
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
   const [showVideo, setShowVideo] = useState<boolean>(false);
@@ -66,20 +73,6 @@ function Videos({ searchQuery }: { searchQuery: string }) {
     setShowVideo(false);
   };
 
-  // useEffect will immediately fetch video data and display when user logs in
-  useEffect(() => {
-    fetch("api/lib/session")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.accessToken) {
-          // when there is an accesstoken, it will fetch the data for videos, else it would use placeholders
-          fetchYoutubePopularVideos(data.accessToken);
-        } else {
-          setVideos(placeholderVideos);
-        }
-      });
-  }, []);
-
   // Need a useRef to track the scroll position of page to load more videos while logged in
   const loadMoreVideosRef = useRef<HTMLDivElement | null>(null);
 
@@ -97,14 +90,17 @@ function Videos({ searchQuery }: { searchQuery: string }) {
 
     const sessionResponse = await fetch("/api/lib/session");
     const { accessToken } = await sessionResponse.json();
-    if (!accessToken) return;
+    if (!accessToken) {
+      setLoadingMoreVideos(false);
+      return;
+    }
 
     let newVideos: VideoType[] = [];
 
     if (searchQuery.trim()) {
       // continue with fetching SEARCHED results
       const QueryResponse = await fetch(
-        `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=12&regionCode-CA&q=${encodeURIComponent(
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=12&regionCode=CA&q=${encodeURIComponent(
           searchQuery
         )}&pageToken=${nextPageToken}`,
         {
@@ -118,6 +114,8 @@ function Videos({ searchQuery }: { searchQuery: string }) {
       const videoId = searchData.items
         .map((item: YouTubeSearch) => item.id.videoId)
         .join(",");
+
+      setNextPageToken(searchData.nextPageToken ?? null);
 
       const detailedRes = await fetch(
         `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${videoId}`,
@@ -175,14 +173,14 @@ function Videos({ searchQuery }: { searchQuery: string }) {
           : "Comments Disabled",
         category: "N/A",
       }));
-      console.log("Current video count:", videos.length);
+      console.log("Current video count:", lastestVideoCountRef.current);
       console.log("New batch:", moreVideos.length);
 
       setVideos((prev) => [...prev, ...moreVideos]);
       setNextPageToken(YoutubeData.nextPageToken ?? null);
       setLoadingMoreVideos(false);
     }
-  }, [loadingMoreVideos, nextPageToken, videos.length, searchQuery]);
+  }, [loadingMoreVideos, nextPageToken, searchQuery]);
 
   // UseEffect to listen for the user scrolling at the bottom of the page when logged in
   useEffect(() => {
@@ -200,13 +198,13 @@ function Videos({ searchQuery }: { searchQuery: string }) {
       if (target) observer.unobserve(target);
       observer.disconnect();
     };
-  }, [fetchMoreVideos]);
+  }, [fetchMoreVideos, searchQuery]);
 
   // Will fetch data for popular youtube videos on first render after login
   const fetchYoutubePopularVideos = async (accessToken: string) => {
     try {
       const response = await fetch(
-        "https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&&chart=mostPopular&maxResults=12&regionCode=CA",
+        "https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&&chart=mostPopular&maxResults=12&regionCode=CA&q=",
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -252,29 +250,46 @@ function Videos({ searchQuery }: { searchQuery: string }) {
   //   fetchVideosBySearchQuery(searchQuery);
   // }, [searchQuery]);
   useEffect(() => {
-    if (!searchQuery || !searchQuery.trim()) {
-      fetch("api/lib/session")
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.accessToken) {
-            fetchYoutubePopularVideos(data.accessToken);
-          } else {
-            setVideos(placeholderVideos);
-          }
-        });
-      return;
+    async function fetchSessionAndVideos() {
+      try {
+        const response = await fetch("api/lib/session");
+
+        if (!response.ok) {
+          console.warn("Session fetch returned invalid JSON", response.status);
+          setVideos(placeholderVideos);
+          return;
+        }
+
+        const data = (await response.json()) as { accessToken?: string };
+        console.log("Session Response:", data);
+
+        const accessToken = data.accessToken;
+
+        if (!accessToken) {
+          setVideos(placeholderVideos);
+          return;
+        }
+
+        if (!searchQuery || !searchQuery.trim()) {
+          await fetchYoutubePopularVideos(accessToken);
+        } else {
+          await fetchVideosBySearchQuery(searchQuery, accessToken); // pass the token so that navigating back wont produce google 03 error
+        }
+      } catch (error) {
+        console.error("Session fetch failed", error);
+        setVideos(placeholderVideos);
+      }
     }
-    fetchVideosBySearchQuery(searchQuery);
+
+    fetchSessionAndVideos();
   }, [searchQuery]);
 
   // Will need to fetch youtube videos based on what the search query is
-  const fetchVideosBySearchQuery = async (query: string) => {
+  const fetchVideosBySearchQuery = async (
+    query: string,
+    accessToken: string
+  ) => {
     try {
-      // Access token
-      const sessionRes = await fetch("/api/lib/session");
-      const sessionData = await sessionRes.json();
-      const accessToken = sessionData.accessToken;
-
       // Search by query
       const searchRes = await fetch(
         `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=12&regionCode=CA&q=${encodeURIComponent(
@@ -296,6 +311,9 @@ function Videos({ searchQuery }: { searchQuery: string }) {
         setVideos([]);
         return;
       }
+
+      setNextPageToken(searchData.nextPageToken || null);
+
       const videoId = (searchData.items as YouTubeSearch[])
         .map((item) => item.id.videoId)
         .join(",");
@@ -336,7 +354,7 @@ function Videos({ searchQuery }: { searchQuery: string }) {
   // {...} spread used to display each video held in the placeholder Videos variable
   return (
     <>
-      <div className="relative z-10 ml-20 mt-5 p-4 w-full h-full max-h-200px max-w-300px bg-gray-800">
+      <div className="relative z-10 ml-20 mt-5 p-10 w-full h-full max-h-200px max-w-300px bg-gray-900">
         <div className="grid grid-cols-4 gap-5">
           {videos.map((video) => (
             <div
