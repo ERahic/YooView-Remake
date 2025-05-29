@@ -1,37 +1,12 @@
-"use client";
-export const dynamic = "force-dynamic";
-import { useSearchParams } from "next/navigation";
-import Videos from "@/app/layout/Videos";
-import Header from "../layout/Header";
-import Category from "@/app/layout/Category";
+import { Suspense } from "react";
+import SearchPage from "./Search page";
 
-function SearchPage() {
-  const searchParams = useSearchParams();
-  const query = searchParams?.get("q") || "";
-
+export default function SearchPageWrapper() {
   return (
-    <div className="relative flex flex-col min-h-screen bg-gray-800">
-      <Header
-        onSearch={() => {}}
-        searchQuery={query}
-        menuPressed={false}
-        setMenuPressed={() => {}}
-      />
-      {/*Wrapper for category background width stretch */}
-      <div className="relative">
-        {/*Code below is to make the width of category component stretch while keeping tags and chevron arrows in middle */}
-        <div className="fixed z-40 top-20 left-0 w-full h-20 caret-transparent bg-gray-800 sm:ml-24"></div>
-
-        <div className="relative z-40">
-          <Category />
-        </div>
-      </div>
-
-      <div className="flex mt-32">
-        <Videos searchQuery={query} />
-      </div>
-    </div>
+    <Suspense
+      fallback={<div className="text-white p-4">Loading Search...</div>}
+    >
+      <SearchPage />
+    </Suspense>
   );
 }
-
-export default SearchPage;

@@ -1,3 +1,4 @@
+"use client";
 //This is where the videos will be palced and take up most of the screen
 //VideoThumbnail component will be imported to help display video cards onto this component
 import VideoThumbnail, { VideoType } from "../components/VideoThumbnail";

@@ -1,3 +1,4 @@
+"use client";
 import { CategoryPlaceholder, CategoryTag } from "../components/CategoryTags";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";

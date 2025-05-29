@@ -44,6 +44,9 @@ export default async function handler(
     // define the access_token variable by extracting data from tokenResponse. Also refreshToken and expiration to fix google 403 error when redirecting page back
     const { access_token, refresh_token, expires_in } = tokenResponse.data;
 
+    console.log("ACCESSTOKEN", access_token);
+    console.log("REFRESH TOKEN", refresh_token);
+
     // The access will now let us get the users profile
     const userInfoRes = await axios.get(
       "https://www.googleapis.com/oauth2/v3/userinfo",
