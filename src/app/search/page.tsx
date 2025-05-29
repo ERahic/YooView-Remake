@@ -11,11 +11,16 @@ function SearchPage() {
 
   return (
     <div className="relative flex flex-col min-h-screen bg-gray-800">
-      <Header onSearch={() => {}} searchQuery={query} />
+      <Header
+        onSearch={() => {}}
+        searchQuery={query}
+        menuPressed={false}
+        setMenuPressed={() => {}}
+      />
       {/*Wrapper for category background width stretch */}
       <div className="relative">
         {/*Code below is to make the width of category component stretch while keeping tags and chevron arrows in middle */}
-        <div className="fixed z-40 top-25 left-0 w-full h-14 bg-gray-800 ml-24"></div>
+        <div className="fixed z-40 top-20 left-0 w-full h-20 caret-transparent bg-gray-800 sm:ml-24"></div>
 
         <div className="relative z-40">
           <Category />

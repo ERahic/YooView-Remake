@@ -145,12 +145,12 @@ function Category() {
 
   return (
     <>
-      <div className="fixed top-24 left-20 right-0 z-20 caret-transparent">
+      <div className="fixed top-22 left-20 right-0 z-20 caret-transparent">
         <div className="relative mx-auto w-full max-w-[750px] px-4 bg-gray-800 rounded-lg overflow-visible flex items-center">
           {/* Left Chevron */}
           <div
             onClick={handleScrollLeft}
-            className="absolute -left-9 top-1/2 -translate-y-1/2 z-30 cursor-pointer transition-opacity duration-300"
+            className="hidden sm:block absolute -left-9 top-1/2 -translate-y-1/2 z-30 cursor-pointer transition-opacity duration-300"
           >
             <ChevronLeftIcon className="text-white" fontSize="large" />
           </div>
@@ -158,7 +158,7 @@ function Category() {
           {/* Right Chevron */}
           <div
             onClick={handleScrollRight}
-            className="absolute -right-9 top-1/2 -translate-y-1/2 z-30 cursor-pointer transition-opacity duration-300"
+            className="hidden sm:block absolute -right-9 top-1/2 -translate-y-1/2 z-30 cursor-pointer transition-opacity duration-300"
           >
             <ChevronRightIcon className="text-white" fontSize="large" />
           </div>
@@ -176,13 +176,13 @@ function Category() {
           <div className="flex-1 overflow-hidden">
             <div
               ref={scrollbarRef}
-              className="scroll-smooth flex gap-8 pt-2 pb-2 pr-4 pl-4 overflow-x-auto scrollbar-hide whitespace-nowrap"
+              className="scroll-smooth flex gap-8 pt-2 pb-2 sm:pr-4 sm:pl-4 overflow-x-auto scrollbar-hide whitespace-nowrap"
             >
               <div className="shrink-0 w-1" />
               {categories.map((tag) => (
                 <div
                   key={tag.id}
-                  className="border select-none border-blue-500 p-2 bg-gray-800 hover:bg-gray-500 px-6 rounded-full min-w-fit"
+                  className="border select-none border-blue-500 p-2 bg-gray-800 hover:bg-gray-500 px-6 rounded-full min-w-fit mt-2"
                 >
                   {tag.title}
                 </div>

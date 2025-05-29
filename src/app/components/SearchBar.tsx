@@ -102,7 +102,7 @@ function SearchBar({ onSearch, searchQuery }: SearchBarProps) {
   // use clsx and useState to make search bar expand a bit when clicked on,
   return (
     <>
-      <div className="flex gap-2 pl-24">
+      <div className="hidden sm:flex gap-2 pr-60">
         {/*Search Bar*/}
         {/*Magnifying glass appears when searchbar is clicked on*/}
         <div className="relative flex">

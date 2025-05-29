@@ -354,8 +354,8 @@ function Videos({ searchQuery }: { searchQuery: string }) {
   // {...} spread used to display each video held in the placeholder Videos variable
   return (
     <>
-      <div className="relative z-10 ml-20 mt-5 p-10 w-full h-full max-h-200px max-w-300px bg-gray-900">
-        <div className="grid grid-cols-4 gap-5">
+      <div className="relative z-10 sm:ml-20 sm:p-10 sm:pb-0 pb-20 mt-5 w-full h-full bg-gray-900">
+        <div className="grid grid-cols-1 w-full h-full sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:gap-5">
           {videos.map((video) => (
             <div
               key={video.id}

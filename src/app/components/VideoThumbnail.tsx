@@ -19,16 +19,17 @@ type Props = {
 
 function VideoThumbnail({ video }: Props) {
   return (
-    <div className="mt-4 rounded-lg p-2 bg-gray-600 caret-transparent h-[380px] flex flex-col">
-      <Image
-        src={video.thumbnail}
-        alt={video.title}
-        width={300}
-        height={200}
-        className="w-full h-75 p-2 rounded-lg"
-      />
+    <div className="w-full bg-gray-600 caret-transparent flex flex-col pb-2 sm:p-2 sm:rounded-lg">
+      {/*Aspect ratio for video components relative to contain fill by videos.tsx*/}
+      <div className="relative w-full aspect-video sm:rounded-lg overflow-hidden">
+        <Image
+          src={video.thumbnail}
+          alt={video.title}
+          fill
+          className="w-full h-75 sm:rounded-lg sm:p-2"
+        />
+      </div>
       <div className="mt-2 line-clamp-2">{video.title}</div>
-
       <div className="flex justify-between items-center mt-1">
         <span>{video.views}</span>
         <div className="flex items-center mt-1 gap-2">
