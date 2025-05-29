@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import SearchPage from "./Search page";
+import SearchPage from "./SearchPage";
 
 export default function SearchPageWrapper() {
   return (
