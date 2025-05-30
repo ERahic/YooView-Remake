@@ -24,7 +24,7 @@ function VideoModal({ videoId, onClose }: Props) {
       <div className="relative w-[1200px] h-auto rounded-lg overflow-hidden bg-transparent">
         <button
           onClick={onClose}
-          className="fixed top-4 right-6 text-6xl text-red-900 cursor-pointer rounded-full"
+          className="absolute text-2xl sm:fixed right-0 sm:top-80 sm:right-150 text-6xl text-red-900 cursor-pointer rounded-full bg-black p-3"
         >
           X
         </button>

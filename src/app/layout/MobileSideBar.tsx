@@ -7,7 +7,7 @@ function MobileNavigation({ onSearch }: { onSearch: (query: string) => void }) {
   const router = useRouter();
 
   return (
-    <div className="fixed flex justify-around items-center border-t border-gray-700 sm:hidden bottom-0 left-0 w-full h-16 z-50 bg-gray-900 text-white">
+    <div className="fixed flex justify-around items-center border-t border-gray-700 sm:hidden bottom-0 left-0 w-full h-16 z-[999] bg-gray-900 text-white">
       {sideBarIcons
         .filter((item) => item.alwaysVisible)
         .map(({ id, icon: Icon, label, path }) => (

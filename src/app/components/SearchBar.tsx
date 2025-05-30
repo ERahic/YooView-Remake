@@ -81,7 +81,7 @@ function SearchBar({ onSearch, searchQuery }: SearchBarProps) {
       }
     };
 
-    const debounce = setTimeout(fetchSearchSuggestions, 300); // use to give a delay on the execution so user is not shown suggestions immediately, without so can cause lag
+    const debounce = setTimeout(fetchSearchSuggestions, 300); // use to give a delay on the execution so user is not shown suggestions immediately, without this can cause lag
     return () => clearTimeout(debounce);
   }, [searchEntered]);
 

@@ -13,6 +13,9 @@ import { User } from "@/pages/api/lib/session";
 import { useRouter } from "next/navigation";
 import MobileNavigation from "./MobileSideBar";
 import SideBar from "@/app/layout/SideBar";
+import SearchIcon from "@mui/icons-material/Search";
+import MobileSearchBar from "../components/MobileSearchBar";
+import { useMediaQuery } from "@mui/material";
 
 // import { signIn } from "next-auth/react"; outdated for this project since Iron-session will be used
 
@@ -33,6 +36,10 @@ function Header({
 }: HeaderProps) {
   // Will make both YooView logo clickable and have user be redirected to home page like on YouTube
   const router = useRouter();
+
+  const [mobileSearchOn, setMobileSearchOn] = useState<boolean>(false);
+
+  const isMobile = useMediaQuery("(max-width: 640px)");
 
   // UseState for when the menu button is pressed, sidebar will expand and provide more options
   // const [menuPressed, setMenuPressed] = useState<boolean>(false);
@@ -65,15 +72,15 @@ function Header({
                 <MenuButton style={{ color: "white" }}></MenuButton>
               </IconButton>
             </div>
-            <div
-              className="flex flex-shrink-0 cursor-pointer transition-all duration-100 hover:drop-shadow-[0_0_10px_rgba(0,100,150,1)] sm:ml-4"
-              onClick={() => {
-                router.push("/");
-                onSearch("");
-              }}
-            >
+            <div className="flex flex-shrink-0 cursor-pointer transition-all duration-100 hover:drop-shadow-[0_0_10px_rgba(0,100,150,1)] sm:ml-4">
               {/*YooView Logo */}
-              <div className="z-50 cursor-pointer flex flex-col flex-shrink-0 justify-center sm:ml-4 mt-2">
+              <div
+                className="z-50 cursor-pointer flex flex-col flex-shrink-0 justify-center sm:ml-4 mt-2"
+                onClick={() => {
+                  router.push("/");
+                  onSearch("");
+                }}
+              >
                 <Image
                   src="/Yooview-logo-dark.png"
                   alt="Logo"
@@ -134,8 +141,16 @@ function Header({
             </div>
           </div>
         </div>
+        {/*MOBILE SEARCHBAR ACTIVE*/}
+        {mobileSearchOn && isMobile && (
+          <MobileSearchBar onClose={() => setMobileSearchOn(false)} />
+        )}
         {/*Mobile AuthButton and maybe search Icon if I can get it to work on mobile screen*/}
-        <div className="sm:hidden absolute right-3 top-3 z-50">
+        <div className="sm:hidden absolute right-3 top-6 z-50 flex items-center gap-6">
+          <SearchIcon
+            className="text-white text-3xl"
+            onClick={() => setMobileSearchOn(true)}
+          />
           <GoogAuthButton />
         </div>
         {/*Wrapper for sidebar component, need to have it hidden when app is loaded on mobile */}
